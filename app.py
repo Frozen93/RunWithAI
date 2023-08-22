@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+from streamlit_lottie import st_lottie
 
 
 def setup_config():
@@ -17,7 +18,7 @@ def apply_styles():
     """Applies custom styles to Streamlit app."""
     hide_default_format = """
            <style>
-           #MainMenu {visibility: hidden; }
+           #MainMenu {visibility: visible; }
            footer {visibility: hidden;}
            </style>
            """
@@ -43,10 +44,10 @@ def load_data(data_source: str) -> pd.DataFrame:
 
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     """Plots the selected metrics over time."""
+    st.subheader("Metrics Over Time")  #
     selected_metrics = st.multiselect(
         "Select metrics to plot:", metrics, default=["Distance"]
     )
-    st.subheader("Metrics Over Time")
     if not selected_metrics:
         st.warning("Please select at least one metric to plot.")
         return
@@ -72,7 +73,16 @@ def main():
     setup_config()
     apply_styles()
 
-    st.header("AI Runner")
+    l, r = st.columns(2)
+    with l:
+        st.header("AI Runner")
+    with r:
+        st_lottie(
+            "https://lottie.host/a2b2ddf8-f030-46fa-b3b2-8c1727afb253/h2zfkvSzpy.json",
+            height=100,
+        )
+
+    st.markdown("___")
 
     data_url = "https://docs.google.com/spreadsheets/d/139ckZPhjRzwmDayTSwSVXzIZUlwMGPqqTQwNg3EIKj0/export?format=csv&gid=0"
     df = load_data(data_url)
