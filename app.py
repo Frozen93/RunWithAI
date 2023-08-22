@@ -38,7 +38,6 @@ def load_data(data_source: str) -> pd.DataFrame:
     data = pd.read_csv(data_source)
     data["Date"] = pd.to_datetime(data["Date"])
     data["Pace"] = data["Pace"].apply(pace_to_minutes)
-    data["PacePerHeartRate"] = data["Pace"] / data["HeartRate"]
     return data.sort_values(by="Date")
 
 
@@ -56,16 +55,16 @@ def plot_selected_metrics(df: pd.DataFrame, metrics: list):
         fig.add_trace(go.Scatter(x=df["Date"], y=df[metric], mode="lines", name=metric))
     fig.update_layout(title="Metrics Over Time", xaxis_title="Date")
     fig.update_xaxes(range=[df["Date"].min(), df["Date"].max()])
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 
 def display_statistics(df: pd.DataFrame):
     """Displays various statistics about the running data."""
     st.subheader("Running Statistics")
     st.write("Total Distance Ran:", df["Distance"].sum().round(2), "km")
-    st.write("Average Heart Rate:", df["HeartRate"].mean(), "bpm")
-    st.write("Best Pace:", df["Pace"].min(), "min/km")
-    st.write("Total Elevation Gain:", df["ElevGain"].sum(), "meters")
+    st.write("Average Heart Rate:", df["HeartRate"].mean().round(2), "bpm")
+    st.write("Best Pace:", df["Pace"].min().round(2), "min/km")
+    st.write("Total Elevation Gain:", df["ElevGain"].sum().round(2), "meters")
 
 
 def main():
@@ -85,7 +84,6 @@ def main():
         "Pace",
         "Time",
         "ElevGain",
-        "PacePerHeartRate",
     ]
     plot_selected_metrics(df, metrics_list)
     display_statistics(df)
