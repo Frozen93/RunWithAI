@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "run-app"
+version = "0.1.0"
+description = ""
+authors = ["MariusSuessmilch <47320006+MariusSuessmilch@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "run_app", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+black = "^23.7.0"
+ruff = "^0.0.285"
+pytest = "^7.4.0"
+pre-commit = "^3.3.3"
+streamlit = "^1.25.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
