@@ -13,6 +13,7 @@ import requests
 import json
 import time
 import textwrap
+import numpy as np
 
 
 def setup_config():
@@ -21,7 +22,6 @@ def setup_config():
         page_title="Run with AI",
         page_icon="🧊",
         layout="wide",
-        initial_sidebar_state="expanded",
     )
 
 
@@ -98,20 +98,68 @@ def plot_distance_histogram(df):
     st.plotly_chart(fig, use_container_width=True)
 
 
+def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
+    """Plots two selected metrics in a scatter plot with a regression line."""
+    st.subheader("Check for correlations with a regression line")
+
+    # Allow users to select two numeric metrics
+    metric_x = st.selectbox("Select metric for x-axis:", metrics, index=0)
+    metric_y = st.selectbox("Select metric for y-axis:", metrics, index=1)
+
+    # Calculate the correlation coefficient
+    correlation = df[metric_x].corr(df[metric_y])
+
+    # Create the scatter plot
+    fig = go.Figure(data=go.Scatter(x=df[metric_x], y=df[metric_y], mode="markers", marker=dict(size=5), name="Data"))
+
+    # Add regression line using numpy
+    try:
+        m, b = np.polyfit(df[metric_x], df[metric_y], 1)
+        fig.add_trace(go.Scatter(x=df[metric_x], y=m * df[metric_x] + b, mode="lines", name="Regression Line"))
+    except:
+        st.warning("Something was wrong with the data, try another metric")
+
+    # Update layout
+    fig.update_layout(
+        title=f"Scatter Plot of {metric_x} vs {metric_y} with Regression Line",
+        xaxis_title=metric_x,
+        yaxis_title=metric_y,
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
+    # Display the correlation coefficient
+    st.markdown(f"**Correlation Coefficient between {metric_x} and {metric_y}:** {correlation:.2f}")
+
+
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     """Plots the selected metrics over time."""
-    st.subheader("Metrics Over Time")  #
+    st.subheader("Metrics Over Time")
     selected_metrics = st.multiselect("Select metrics to plot:", metrics, default=["Distance"])
+
+    # Allow users to select the number of months they want to see into the past
+    months_back = st.slider(
+        "Select how many months to view:", 1, 24, 6
+    )  # Example: from 1 to 24 months with a default of 6 months
+
+    # Calculate the starting date based on the selected number of months
+    end_date = df["Date"].max()
+    start_date = end_date - pd.DateOffset(months=months_back)
+
+    # Filter the dataframe based on the calculated date range
+    df = df[(df["Date"] >= start_date) & (df["Date"] <= end_date)]
+
     if not selected_metrics:
         st.warning("Please select at least one metric to plot.")
         return
+
     fig = go.Figure()
     for metric in selected_metrics:
         fig.add_trace(
             go.Scatter(
                 x=df["Date"],
                 y=df[metric],
-                mode="markers",
+                mode="lines",
                 name=metric,
             )
         )
@@ -456,13 +504,6 @@ def init_langchain_agent(df):
     )
 
 
-#### sidebar ####
-options = {
-    "Monthly Avg Pace": plot_monthly_avg_pace,
-    "Distance Histogram": plot_distance_histogram,
-}
-
-
 def old_chatbot():
     st.markdown("___")
     base_promt = f"You are the running coach of the runner with the following data: {df.to_json()}, answer his questions short and to the point. Underline your statements with numbers to show improvement. Use the metric system and provide paces in min/km, distances in km . Mention times in minutes, not seconds. Provide a helpful table in the beginning. Question:  "
@@ -520,15 +561,18 @@ def main():
         "Temperature",
     ]
 
-    plot_selected_metrics(df, metrics_list)
+    # plot_selected_metrics(df, metrics_list)
+    plot_scatter_metrics_with_regression(df, metrics_list)
     display_comparison_metrics(df)
 
     a, _, b = st.columns((6, 1, 6))
     with a:
         plot_cumulative_kms_per_month(df)
+        plot_monthly_avg_pace(df)
 
     with b:
         plot_pace_distribution(df)
+        plot_distance_histogram(df)
 
     st.title("Pandas DataFrame Agent with Langchain")
     st.write("Ask any question related your running data")
@@ -538,8 +582,9 @@ def main():
     if user_input:
         try:
             # This is where you initialize and run your langchain agent.
-            response = init_langchain_agent(df).run(user_input)
-            st.markdown(response)
+            with st.spinner("AI at work!"):
+                response = init_langchain_agent(df).run(user_input)
+                st.markdown(response)
 
         except ValidationError:
             st.error("API Key Validation failed. Ensure your API key is correctly configured.")
@@ -553,15 +598,6 @@ def main():
         # Any other exceptions can be caught with a generic message
         except Exception as e:
             st.error(f"An unexpected error occurred: {str(e)}")
-
-    selected_plots = st.sidebar.multiselect(
-        "Choose additional plots: ",
-        list(options.keys()),
-        placeholder="Choose option(s)",
-    )
-
-    for plot_name in selected_plots:
-        options[plot_name](df)
 
 
 if __name__ == "__main__":
