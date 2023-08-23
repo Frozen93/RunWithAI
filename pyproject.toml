@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "run_app", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.8,<3.9.7 || >3.9.7,<4.0"
 black = "^23.7.0"
 ruff = "^0.0.285"
 pytest = "^7.4.0"
@@ -16,6 +16,7 @@ streamlit = "^1.25.0"
 pandas = "^2.0.3"
 streamlit-lottie = "^0.0.5"
 plotly = "^5.16.1"
+watchdog = "^3.0.0"
 
 
 [build-system]
