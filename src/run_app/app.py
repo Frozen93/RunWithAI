@@ -513,7 +513,6 @@ def main():
 
     st.markdown("___")
 
-    # gpt_advice(df)
     selected_plots = st.sidebar.multiselect(
         "Choose additional plots: ",
         list(options.keys()),
