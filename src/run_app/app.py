@@ -319,8 +319,8 @@ def activity_heatmap(df):
         yaxis_title="Mon Tue Wed Thu Fr Sat Sun",
         width=1800,  # 7 boxes * 100 pixels/box + 30 pixels for padding
         height=500,  # 52 boxes * 7 pixels/box + 15 pixels for padding
-        xaxis=dict(constrain="domain"),
-        yaxis=dict(scaleanchor="x"),
+        xaxis=dict(constrain="domain", showgrid=False, zeroline=False, showline=False),
+        yaxis=dict(scaleanchor="x", showgrid=False, zeroline=False, showline=False),
         annotations=all_annotations,
     )
     fig.update_yaxes(
