@@ -41,8 +41,10 @@ def load_data(data_source: str) -> pd.DataFrame:
     """Loads and preprocesses running data."""
     data = pd.read_csv(data_source)
     data["Date"] = pd.to_datetime(data["Date"])
+    data["Month-Year"] = data["Date"].dt.strftime("%Y-%m")
     data["Pace"] = data["Pace"].apply(convert_pace)
 
+    data = data[data["Date"] >= "2023-01-01"]
     return data.sort_values(by="Date")
 
 
@@ -56,7 +58,7 @@ def convert_pace(pace):
 def pace_threshold(df):
     pace_threshold = st.number_input(
         "Enter a pace threshold (exclude records with pace above/slower than this value):",
-        value=10.0,
+        value=7.2,
         step=0.1,
     )
     df = df[df["Pace"] <= pace_threshold]
@@ -66,7 +68,7 @@ def pace_threshold(df):
 def distance_threshold(df):
     dist_threshold = st.number_input(
         "Enter a distance threshold (exclude short runs below this value):",
-        value=1,
+        value=4,
         step=1,
     )
     df = df[df["Distance"] >= dist_threshold]
@@ -168,11 +170,9 @@ def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     st.plotly_chart(fig, use_container_width=True)
 
 
+@st.cache_data
 def plot_monthly_avg_pace(df: pd.DataFrame):
     """Plots the average pace for every month using plotly."""
-
-    # Extract month and year from "Date" and create a new "Month-Year" column
-    df["Month-Year"] = df["Date"].dt.strftime("%Y-%m")
 
     # Group by "Month-Year" and calculate the average pace
     monthly_avg = df.groupby("Month-Year")["Pace"].mean().reset_index()
@@ -196,16 +196,10 @@ def plot_monthly_avg_pace(df: pd.DataFrame):
     st.plotly_chart(fig, use_container_width=True)
 
 
+@st.cache_data
 def plot_cumulative_kms_per_month(df: pd.DataFrame):
     """Plots the total distance for every month using a box plot in plotly."""
-
-    # Extract month and year from "Date" and create a new "Month-Year" column
-    df["Month-Year"] = df["Date"].dt.strftime("%Y-%m")
-
-    # Group by "Month-Year" and sum the distances for each month
     monthly_sum = df.groupby("Month-Year")["Distance"].sum().reset_index()
-
-    # Create a box plot of the monthly summed distances
     fig = go.Figure(
         data=[
             go.Bar(
@@ -574,8 +568,7 @@ def main():
         plot_pace_distribution(df)
         plot_distance_histogram(df)
 
-    st.title("Pandas DataFrame Agent with Langchain")
-    st.write("Ask any question related your running data")
+    st.subheader("Ask the AI any question related to your running data")
 
     user_input = st.text_input("Your question:", "")
 
