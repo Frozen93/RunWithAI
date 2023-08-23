@@ -50,7 +50,7 @@ def convert_pace(pace):
 def pace_threshold(df):
     pace_threshold = st.number_input(
         "Enter a pace threshold (exclude records with pace above/slower than this value):",
-        value=10,
+        value=10.0,
         step=0.1,
     )
     df = df[df["Pace"] <= pace_threshold]
