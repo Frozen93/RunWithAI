@@ -41,8 +41,10 @@ def load_data(data_source: str) -> pd.DataFrame:
     """Loads and preprocesses running data."""
     data = pd.read_csv(data_source)
     data["Date"] = pd.to_datetime(data["Date"])
+    data["Month-Year"] = data["Date"].dt.strftime("%Y-%m")
     data["Pace"] = data["Pace"].apply(convert_pace)
 
+    data = data[data["Date"] >= "2023-01-01"]
     return data.sort_values(by="Date")
 
 
@@ -120,6 +122,7 @@ def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     st.plotly_chart(fig, use_container_width=True)
 
 
+@st.cache_data
 def plot_monthly_avg_pace(df: pd.DataFrame):
     """Plots the average pace for every month using plotly."""
 
@@ -148,6 +151,7 @@ def plot_monthly_avg_pace(df: pd.DataFrame):
     st.plotly_chart(fig, use_container_width=True)
 
 
+@st.cache_data
 def plot_cumulative_kms_per_month(df: pd.DataFrame):
     """Plots the total distance for every month using a box plot in plotly."""
 
