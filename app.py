@@ -256,7 +256,7 @@ def display_comparison_metrics(df: pd.DataFrame):
                 st.metric(label=metric, value=value, delta=round(delta_val, 2))
 
 
-def test_heatmap(df):
+def activity_heatmap(df):
     distances = [[0 for _ in range(52)] for _ in range(7)]
     full_dates = [["" for _ in range(52)] for _ in range(7)]
 
@@ -356,7 +356,7 @@ def main():
     with threshold:
         df = distance_threshold(df)
 
-    test_heatmap(df)
+    activity_heatmap(df)
 
     with st.expander("Show raw data"):
         st.dataframe(
