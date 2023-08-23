@@ -72,11 +72,7 @@ def plot_distance_histogram(df):
                 x=df["Distance"],
                 nbinsx=50,
                 marker_color="rgba(231, 29, 54, 0.5)",  # Adjusted the color to include transparency
-                marker=dict(
-                    line=dict(
-                        color="rgba(238, 98, 116, 0.8)", width=1
-                    )  # Outline: black, 1px width
-                ),
+                marker=dict(line=dict(color="rgba(238, 98, 116, 0.8)", width=1)),  # Outline: black, 1px width
             ),
         ]
     )
@@ -96,9 +92,7 @@ def plot_distance_histogram(df):
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     """Plots the selected metrics over time."""
     st.subheader("Metrics Over Time")  #
-    selected_metrics = st.multiselect(
-        "Select metrics to plot:", metrics, default=["Distance"]
-    )
+    selected_metrics = st.multiselect("Select metrics to plot:", metrics, default=["Distance"])
     if not selected_metrics:
         st.warning("Please select at least one metric to plot.")
         return
@@ -162,11 +156,7 @@ def plot_cumulative_kms_per_month(df: pd.DataFrame):
                 x=monthly_sum["Month-Year"],
                 name="Distance",
                 marker_color="rgba(60, 75, 255, 0.6)",
-                marker=dict(
-                    line=dict(
-                        color="rgba(137, 146, 255, 0.8)", width=1
-                    )  # Outline: black, 1px width
-                ),
+                marker=dict(line=dict(color="rgba(137, 146, 255, 0.8)", width=1)),  # Outline: black, 1px width
             )
         ]
     )
@@ -225,14 +215,11 @@ def display_comparison_metrics(df: pd.DataFrame):
     end_date = df["Date"].max()
 
     # Compute metrics for the last 30 days
-    last_30_days = df[
-        (df["Date"] <= end_date) & (df["Date"] > end_date - pd.Timedelta(days=30))
-    ]
+    last_30_days = df[(df["Date"] <= end_date) & (df["Date"] > end_date - pd.Timedelta(days=30))]
 
     # Compute metrics for the previous 30 days
     previous_30_days = df[
-        (df["Date"] <= end_date - pd.Timedelta(days=30))
-        & (df["Date"] > end_date - pd.Timedelta(days=60))
+        (df["Date"] <= end_date - pd.Timedelta(days=30)) & (df["Date"] > end_date - pd.Timedelta(days=60))
     ]
 
     # Compute metrics for the entire dataset
@@ -309,10 +296,7 @@ def activity_heatmap(df):
         [1.0, "rgba(70, 236, 70, 1)"],
     ]
     hover = [
-        [
-            f"Day: {date}<br>Distance: {dist} km" if date else ""
-            for date, dist in zip(date_row, dist_row)
-        ]
+        [f"Day: {date}<br>Distance: {dist} km" if date else "" for date, dist in zip(date_row, dist_row)]
         for date_row, dist_row in zip(full_dates, distances)
     ]
 
@@ -364,8 +348,20 @@ def activity_heatmap(df):
     st.plotly_chart(fig, use_container_width=True)
 
 
-def gpt_advice():
+def gpt_advice(df):
+    prompt = f"Based on the running data in the pandas dataframe {df}, describe the progress of the runner as his coach and give some advice"
     openai.api_key = st.secrets["gpt4_key"]
+    completions = openai.Completion.create(
+        engine="gpt-4",
+        prompt=prompt,
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        temperature=0.6,
+    )
+
+    message = completions.choices[0].text
+    return message
 
 
 #### sidebar ####
@@ -389,7 +385,9 @@ def main():
             height=100,
         )
 
-    data_url = "https://docs.google.com/spreadsheets/d/139ckZPhjRzwmDayTSwSVXzIZUlwMGPqqTQwNg3EIKj0/export?format=csv&gid=0"
+    data_url = (
+        "https://docs.google.com/spreadsheets/d/139ckZPhjRzwmDayTSwSVXzIZUlwMGPqqTQwNg3EIKj0/export?format=csv&gid=0"
+    )
     df = load_data(data_url)
     df = df[df["Date"] >= "2023-01-01"]
 
@@ -426,7 +424,7 @@ def main():
 
     with b:
         plot_pace_distribution(df)
-    # plot_distance_histogram(df)
+    gpt_advice(df)
     selected_plots = st.sidebar.multiselect(
         "Choose additional plots: ",
         list(options.keys()),
