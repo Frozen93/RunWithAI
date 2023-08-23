@@ -359,8 +359,8 @@ def gpt_advice(df):
         ],
     )
 
-    message = completions.choices[0].text
-    return message
+    message = completions.choices[0]
+    st.write(message)
 
 
 #### sidebar ####
