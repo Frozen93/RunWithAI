@@ -4,6 +4,10 @@ import plotly.graph_objects as go
 from streamlit_lottie import st_lottie
 import plotly.figure_factory as ff
 import openai
+import requests
+import json
+import time
+import textwrap
 
 
 def setup_config():
@@ -348,19 +352,93 @@ def activity_heatmap(df):
     st.plotly_chart(fig, use_container_width=True)
 
 
-def gpt_advice(df):
-    prompt = f"Based on the running data in the pandas dataframe {df}, describe the progress of the runner as his coach and give some advice"
-    openai.api_key = st.secrets["gpt4_key"]
-    completions = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt},
-        ],
-    )
+def wrap_text(text, width=140):
+    # Unwrap the text first to remove any existing line breaks
+    unwrapped_text = ' '.join(text.splitlines())
+    # Use textwrap to wrap the text
+    return '\n'.join(textwrap.wrap(unwrapped_text, width=width))
 
-    message = completions.choices[0]
-    st.write(message)
+
+def separate_table(content):
+    # Split the content into lines
+    lines = content.split('\n')
+
+    # Find the delimiter row (which typically follows the header row)
+    table_start_index = -1
+    for index, line in enumerate(lines):
+        if set(line.strip()) <= {'-', '|', ' '}:
+            table_start_index = index - 1  # Assuming the previous line is the header
+            break
+
+    # If we found a table start
+    if table_start_index != -1:
+        # Gather the table lines
+        table_lines = [lines[table_start_index]]
+        for line in lines[table_start_index + 1 :]:
+            if "|" in line:
+                table_lines.append(line)
+            else:
+                break
+
+        # Separate the table from the rest
+        before_table = '\n'.join(lines[:table_start_index])
+        table_content = '\n'.join(table_lines)
+        after_table = '\n'.join(lines[table_start_index + len(table_lines) :])
+
+        return before_table, table_content, after_table
+
+    return content, "", ""
+
+
+def fetch_gpt_response_test(query):
+    headers = {"Content-Type": "application/json", "Authorization": f"Bearer {st.secrets['gpt4_key']}"}
+    data = {"model": "gpt-4", "messages": [{"role": "user", "content": query}], "stream": True}
+
+    response = requests.post('https://api.openai.com/v1/chat/completions', headers=headers, json=data, stream=True)
+
+    accumulated_content = ""
+    for line in response.iter_lines():
+        if line:
+            decoded_line = line.decode('utf-8')
+            if decoded_line.startswith('data:'):
+                try:
+                    json_data = json.loads(decoded_line[5:])
+                except json.JSONDecodeError:
+                    continue
+                choice = json_data.get('choices', [{}])[0]
+                delta = choice.get('delta', {})
+                content_chunk = delta.get('content', "")
+                accumulated_content += content_chunk
+
+                # Separate table content
+                before_table, table_content, after_table = separate_table(accumulated_content)
+
+                # Only wrap the non-table content
+                formatted_content = wrap_text(before_table) + table_content + wrap_text(after_table)
+                yield formatted_content
+
+
+def fetch_gpt_response(query):
+    headers = {"Content-Type": "application/json", "Authorization": f"Bearer {st.secrets['gpt4_key']}"}
+    data = {"model": "gpt-4", "messages": [{"role": "user", "content": query}], "stream": True}
+
+    response = requests.post('https://api.openai.com/v1/chat/completions', headers=headers, json=data, stream=True)
+
+    accumulated_content = ""
+    for line in response.iter_lines():
+        if line:
+            decoded_line = line.decode('utf-8')
+            if decoded_line.startswith('data:'):
+                try:
+                    json_data = json.loads(decoded_line[5:])
+                except json.JSONDecodeError:
+                    continue
+                choice = json_data.get('choices', [{}])[0]
+                delta = choice.get('delta', {})
+                content_chunk = delta.get('content', "")
+                accumulated_content += content_chunk  # Accumulate the content
+                formatted_content = wrap_text(accumulated_content)
+                yield formatted_content
 
 
 #### sidebar ####
@@ -415,7 +493,6 @@ def main():
 
     plot_selected_metrics(df, metrics_list)
     display_comparison_metrics(df)
-    # plot_monthly_avg_pace(df)  # less important than pace distribution, make selectable
 
     a, _, b = st.columns((6, 1, 6))
     with a:
@@ -423,7 +500,20 @@ def main():
 
     with b:
         plot_pace_distribution(df)
-    gpt_advice(df)
+
+    st.markdown("___")
+    base_promt = f"You are the running coach of the runner with the following data: {df.to_json()}, answer his questions short and to the point. Underline your statements with numbers to show improvement. Use the metric system and provide paces in min/km, distances in km . Mention times in minutes, not seconds. Provide a helpful table in the beginning. Question:  "
+    user_input = st.text_input("Ask the AI about your running:")
+
+    if st.button("Submit"):
+        placeholder = st.empty()  # Placeholder for dynamic content
+        for accumulated_response in fetch_gpt_response_test(base_promt + user_input):
+            placeholder.markdown(accumulated_response)  # Update Streamlit with the accumulated text
+            time.sleep(0.5)  # Optional: To slow down the streaming for better visualization
+
+    st.markdown("___")
+
+    # gpt_advice(df)
     selected_plots = st.sidebar.multiselect(
         "Choose additional plots: ",
         list(options.keys()),
