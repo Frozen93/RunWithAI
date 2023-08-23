@@ -357,7 +357,6 @@ def gpt_advice(df):
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
         ],
-        stream=True
     )
 
     message = completions.choices[0]
