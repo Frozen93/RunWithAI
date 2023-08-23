@@ -67,6 +67,22 @@ def distance_threshold(df):
     return df
 
 
+def plot_distance_histogram(df):
+    # Create histogram
+    fig = go.Figure(data=[go.Histogram(x=df["Distance"], nbinsx=50)])
+
+    # Update layout for better visualization
+    fig.update_layout(
+        title="Distribution of Running Distances",
+        xaxis_title="Distance (km)",
+        yaxis_title="Number of Runs",
+        bargap=0.1,
+    )
+
+    # Display histogram in Streamlit
+    st.plotly_chart(fig, use_container_width=True)
+
+
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     """Plots the selected metrics over time."""
     st.subheader("Metrics Over Time")  #
@@ -332,6 +348,13 @@ def activity_heatmap(df):
     st.plotly_chart(fig, use_container_width=True)
 
 
+#### sidebar ####
+options = {
+    "Monthly Avg Pace": plot_monthly_avg_pace,
+    "Distance Histogram": plot_distance_histogram,
+}
+
+
 def main():
     """Main function of the Streamlit App."""
     setup_config()
@@ -372,11 +395,24 @@ def main():
         "ElevGain",
         "Temperature",
     ]
+
     plot_selected_metrics(df, metrics_list)
     display_comparison_metrics(df)
-    plot_monthly_avg_pace(df)
-    plot_cumulative_kms_per_month(df)
-    plot_pace_distribution(df)
+    # plot_monthly_avg_pace(df)  # less important than pace distribution, make selectable
+
+    a, _, b = st.columns((6, 1, 6))
+    with a:
+        plot_cumulative_kms_per_month(df)
+
+    with b:
+        plot_pace_distribution(df)
+    # plot_distance_histogram(df)
+    selected_plots = st.sidebar.multiselect(
+        "Choose Plots to Display", list(options.keys())
+    )
+
+    for plot_name in selected_plots:
+        options[plot_name](df)
 
 
 if __name__ == "__main__":
