@@ -23,6 +23,19 @@ def setup_config():
         page_icon="🧊",
         layout="wide",
     )
+    st.markdown(
+        """ <style>
+    footer {visibility: hidden;}
+
+    footer:hover,  footer:active {
+        color: #ffffff;
+        background-color: transparent;
+        text-decoration: underline;
+        transition: 400ms ease 0s;
+    }
+    </style>""",
+        unsafe_allow_html=True,
+    )
 
 
 def apply_styles():
