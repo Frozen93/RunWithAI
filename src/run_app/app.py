@@ -49,8 +49,8 @@ def convert_pace(pace):
 
 def pace_threshold(df):
     pace_threshold = st.number_input(
-        "Enter a pace threshold (exclude records with pace above this value):",
-        value=7.0,
+        "Enter a pace threshold (exclude records with pace above/slower than this value):",
+        value=10,
         step=0.1,
     )
     df = df[df["Pace"] <= pace_threshold]
@@ -59,8 +59,8 @@ def pace_threshold(df):
 
 def distance_threshold(df):
     dist_threshold = st.number_input(
-        "Enter a distance threshold (exclude records with distance below this value):",
-        value=10,
+        "Enter a distance threshold (exclude short runs below this value):",
+        value=1,
         step=1,
     )
     df = df[df["Distance"] >= dist_threshold]
