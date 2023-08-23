@@ -1,12 +1,8 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import plotly.graph_objects as go
 from streamlit_lottie import st_lottie
-import plotly.express as px
 import plotly.figure_factory as ff
-from datetime import datetime, timedelta
-import calendar
 import openai
 
 
