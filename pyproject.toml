@@ -20,6 +20,7 @@ watchdog = "^3.0.0"
 openai = "^0.27.9"
 requests = "^2.31.0"
 langchain = "^0.0.271"
+tabulate = "^0.9.0"
 
 
 [build-system]
