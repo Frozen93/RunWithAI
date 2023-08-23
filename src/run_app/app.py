@@ -360,7 +360,7 @@ def gpt_advice(df):
         stream=True
     )
 
-    message = completions.choices[0]['message']['content']
+    message = completions.choices[0]
     st.write(message)
 
 
