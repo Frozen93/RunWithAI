@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "run_app", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 black = "^23.7.0"
 ruff = "^0.0.285"
 pytest = "^7.4.0"
