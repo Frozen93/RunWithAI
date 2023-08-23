@@ -351,13 +351,12 @@ def activity_heatmap(df):
 def gpt_advice(df):
     prompt = f"Based on the running data in the pandas dataframe {df}, describe the progress of the runner as his coach and give some advice"
     openai.api_key = st.secrets["gpt4_key"]
-    completions = openai.Completion.create(
-        engine="gpt-4",
-        prompt=prompt,
-        max_tokens=1024,
-        n=1,
-        stop=None,
-        temperature=0.6,
+    completions = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt},
+        ],
     )
 
     message = completions.choices[0].text
