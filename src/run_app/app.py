@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.figure_factory as ff
 from datetime import datetime, timedelta
 import calendar
+import openai
 
 
 def setup_config():
@@ -365,6 +366,10 @@ def activity_heatmap(df):
     for ann in fig.layout.annotations:
         ann.font.size = 9
     st.plotly_chart(fig, use_container_width=True)
+
+
+def gpt_advice():
+    openai.api_key = st.secrets["gpt4_key"]
 
 
 #### sidebar ####

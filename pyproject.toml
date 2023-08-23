@@ -17,6 +17,7 @@ pandas = "^2.0.3"
 streamlit-lottie = "^0.0.5"
 plotly = "^5.16.1"
 watchdog = "^3.0.0"
+openai = "^0.27.9"
 
 
 [build-system]
