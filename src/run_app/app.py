@@ -536,14 +536,14 @@ def main():
     with r:
         st_lottie(
             "https://lottie.host/a2b2ddf8-f030-46fa-b3b2-8c1727afb253/h2zfkvSzpy.json",
-            height=100,
+            height=110,
         )
 
     data_url = (
         "https://docs.google.com/spreadsheets/d/139ckZPhjRzwmDayTSwSVXzIZUlwMGPqqTQwNg3EIKj0/export?format=csv&gid=0"
     )
     df = load_data(data_url)
-    df = df[df["Date"] >= "2023-01-01"]
+    # df = df[df["Date"] >= "2023-01-01"]
 
     pace, threshold = st.columns(2)
     with pace:
@@ -552,6 +552,7 @@ def main():
         df = distance_threshold(df)
 
     activity_heatmap(df)
+    display_comparison_metrics(df)
 
     with st.expander("Show raw data"):
         st.dataframe(
@@ -570,7 +571,6 @@ def main():
 
     # plot_selected_metrics(df, metrics_list)
     plot_scatter_metrics_with_regression(df, metrics_list)
-    display_comparison_metrics(df)
 
     a, _, b = st.columns((6, 1, 6))
     with a:
