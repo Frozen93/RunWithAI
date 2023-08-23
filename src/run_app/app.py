@@ -359,7 +359,7 @@ def gpt_advice(df):
         ],
     )
 
-    message = completions.choices[0]
+    message = completions.choices[0]['message']['content']
     st.write(message)
 
 
