@@ -408,7 +408,9 @@ def main():
         plot_pace_distribution(df)
     # plot_distance_histogram(df)
     selected_plots = st.sidebar.multiselect(
-        "Choose Plots to Display", list(options.keys())
+        "Choose additional plots: ",
+        list(options.keys()),
+        placeholder="Choose option(s)",
     )
 
     for plot_name in selected_plots:
