@@ -3,7 +3,12 @@ import pandas as pd
 import plotly.graph_objects as go
 from streamlit_lottie import st_lottie
 import plotly.figure_factory as ff
-import openai
+from langchain.agents import create_pandas_dataframe_agent
+from langchain.chat_models import ChatOpenAI
+from langchain.agents.agent_types import AgentType
+from langchain.llms import OpenAI
+from pydantic import ValidationError
+from langchain.agents.openai_functions_agent.base import OutputParserException
 import requests
 import json
 import time
@@ -441,11 +446,35 @@ def fetch_gpt_response(query):
                 yield formatted_content
 
 
+def init_langchain_agent(df):
+    # Initialize agent
+    return create_pandas_dataframe_agent(
+        ChatOpenAI(temperature=0, model="gpt-4", openai_api_key=st.secrets['gpt4_key']),
+        df,
+        verbose=True,
+        agent_type=AgentType.OPENAI_FUNCTIONS,
+    )
+
+
 #### sidebar ####
 options = {
     "Monthly Avg Pace": plot_monthly_avg_pace,
     "Distance Histogram": plot_distance_histogram,
 }
+
+
+def old_chatbot():
+    st.markdown("___")
+    base_promt = f"You are the running coach of the runner with the following data: {df.to_json()}, answer his questions short and to the point. Underline your statements with numbers to show improvement. Use the metric system and provide paces in min/km, distances in km . Mention times in minutes, not seconds. Provide a helpful table in the beginning. Question:  "
+    user_input = st.text_input("Ask the AI about your running:")
+
+    if st.button("Submit"):
+        placeholder = st.empty()  # Placeholder for dynamic content
+        for accumulated_response in fetch_gpt_response_test(base_promt + user_input):
+            placeholder.markdown(accumulated_response)  # Update Streamlit with the accumulated text
+            time.sleep(0.5)  # Optional: To slow down the streaming for better visualization
+
+    st.markdown("___")
 
 
 def main():
@@ -501,17 +530,29 @@ def main():
     with b:
         plot_pace_distribution(df)
 
-    st.markdown("___")
-    base_promt = f"You are the running coach of the runner with the following data: {df.to_json()}, answer his questions short and to the point. Underline your statements with numbers to show improvement. Use the metric system and provide paces in min/km, distances in km . Mention times in minutes, not seconds. Provide a helpful table in the beginning. Question:  "
-    user_input = st.text_input("Ask the AI about your running:")
+    st.title("Pandas DataFrame Agent with Langchain")
+    st.write("Ask any question related your running data")
 
-    if st.button("Submit"):
-        placeholder = st.empty()  # Placeholder for dynamic content
-        for accumulated_response in fetch_gpt_response_test(base_promt + user_input):
-            placeholder.markdown(accumulated_response)  # Update Streamlit with the accumulated text
-            time.sleep(0.5)  # Optional: To slow down the streaming for better visualization
+    user_input = st.text_input("Your question:", "")
 
-    st.markdown("___")
+    if user_input:
+        try:
+            # This is where you initialize and run your langchain agent.
+            response = init_langchain_agent(df).run(user_input)
+            st.markdown(response)
+
+        except ValidationError:
+            st.error("API Key Validation failed. Ensure your API key is correctly configured.")
+
+        except ImportError:
+            st.error("A required library is missing. Ensure you've installed all dependencies.")
+
+        except OutputParserException:
+            st.error("There was an error parsing the response. Please try a different query or check your data.")
+
+        # Any other exceptions can be caught with a generic message
+        except Exception as e:
+            st.error(f"An unexpected error occurred: {str(e)}")
 
     selected_plots = st.sidebar.multiselect(
         "Choose additional plots: ",
