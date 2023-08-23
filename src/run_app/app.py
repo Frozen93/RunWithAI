@@ -69,7 +69,20 @@ def distance_threshold(df):
 
 def plot_distance_histogram(df):
     # Create histogram
-    fig = go.Figure(data=[go.Histogram(x=df["Distance"], nbinsx=50)])
+    fig = go.Figure(
+        data=[
+            go.Histogram(
+                x=df["Distance"],
+                nbinsx=50,
+                marker_color="rgba(231, 29, 54, 0.5)",  # Adjusted the color to include transparency
+                marker=dict(
+                    line=dict(
+                        color="rgba(238, 98, 116, 0.8)", width=1
+                    )  # Outline: black, 1px width
+                ),
+            ),
+        ]
+    )
 
     # Update layout for better visualization
     fig.update_layout(
@@ -122,7 +135,8 @@ def plot_monthly_avg_pace(df: pd.DataFrame):
             go.Bar(
                 x=monthly_avg["Month-Year"],
                 y=monthly_avg["Pace"],
-                marker_color="#7209b7",
+                marker_color="rgba(164, 61, 174, 0.62)",
+                marker=dict(line=dict(color="rgba(195, 108, 203, 0.8)", width=1)),
             )
         ]
     )
@@ -150,7 +164,12 @@ def plot_cumulative_kms_per_month(df: pd.DataFrame):
                 y=monthly_sum["Distance"],
                 x=monthly_sum["Month-Year"],
                 name="Distance",
-                marker_color="#3f37c9",
+                marker_color="rgba(60, 75, 255, 0.6)",
+                marker=dict(
+                    line=dict(
+                        color="rgba(137, 146, 255, 0.8)", width=1
+                    )  # Outline: black, 1px width
+                ),
             )
         ]
     )
