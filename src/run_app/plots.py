@@ -48,6 +48,26 @@ def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
     st.markdown(f"**Correlation Coefficient between {metric_x} and {metric_y}:** {correlation:.2f}")
 
 
+def plot_distance_histogram(df):
+    fig = go.Figure(
+        data=[
+            go.Histogram(
+                x=df["distance_km"],
+                nbinsx=50,
+                marker_color="rgba(231, 29, 54, 0.5)",
+                marker=dict(line=dict(color="rgba(238, 98, 116, 0.8)", width=1)),
+            ),
+        ]
+    )
+    fig.update_layout(
+        title="Distribution of Running distance_meterss",
+        xaxis_title="distance_meters (km)",
+        yaxis_title="Number of Runs",
+        bargap=0.1,
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     st.subheader("Metrics Over Time")
     selected_metrics = st.multiselect("Select metrics to plot:", metrics, default=["distance_km"])
