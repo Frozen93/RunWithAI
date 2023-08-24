@@ -25,7 +25,7 @@ def load_image_as_base64(image_path):
 
 
 def powered_by_strava_logo():
-    base64_image = load_image_as_base64("by_strava.png")
+    base64_image = load_image_as_base64("./images/by_strava.png")
     st.markdown(
         f'<img src="data:image/png;base64,{base64_image}" width="100%" alt="powered by strava">',
         unsafe_allow_html=True,
@@ -57,7 +57,7 @@ def login_header(header=None):
         col1, _, _, button = header
         base = button
 
-    base64_image = load_image_as_base64("strava.png")
+    base64_image = load_image_as_base64("./images/strava.png")
     base.markdown(
         (
             f"<a href=\"{strava_authorization_url}\">"

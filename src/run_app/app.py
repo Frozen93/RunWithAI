@@ -357,12 +357,11 @@ def main():
     strava_header = strava.header()
     strava_auth = strava.authenticate(header=strava_header, stop_if_unauthenticated=False)
     if strava_auth:
-        df_raw = pd.DataFrame()  # Start with an empty DataFrame
+        df_raw = pd.DataFrame()
         page_num = 1
 
         while True:
             try:
-                # Fetch data for the current page
                 df_page = strava.dataframe_from_strava(strava_auth, page_num)
 
                 # If the fetched page is empty, break the loop
