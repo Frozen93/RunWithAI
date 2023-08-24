@@ -32,7 +32,7 @@ def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
                 y=m * df[metric_x] + b,
                 mode="lines",
                 name="Regression Line",
-                line=dict(color="rgba(238, 98, 116, 0.8)", width=1),
+                line=dict(color="rgba(238, 98, 116, 0.8)", width=2),
             )
         )
     except:
