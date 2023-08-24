@@ -102,7 +102,6 @@ def plot_monthly_avg_pace(df: pd.DataFrame):
     )
     fig.update_layout(
         title="Average pace per Month",
-        xaxis_title="month-year",
         yaxis_title="Average pace",
     )
     st.plotly_chart(fig, use_container_width=True)
@@ -125,7 +124,6 @@ def plot_cumulative_kms_per_month(df: pd.DataFrame):
 
     fig.update_layout(
         title="Total distance_meters per Month",
-        xaxis_title="month-year",
         yaxis_title="Total distance_meters",
     )
     st.plotly_chart(fig, use_container_width=True)
@@ -147,17 +145,13 @@ def plot_pace_distribution(df):
                 showlegend=False,
                 line=dict(color="#f77f00"),
                 hovertemplate=(
-                    "Min: %{customdata.min}<br>"
-                    "Max: %{customdata.max}<br>"
-                    "Median: %{customdata.median}<br>"
-                    "month-year: %{name}"
+                    "Min: %{customdata.min}<br>" "Max: %{customdata.max}<br>" "Median: %{customdata.median}<br>"
                 ),
             )
         )
 
     fig.update_layout(
         title="Distribution of pace for Each Month",
-        xaxis_title="month-year",
         yaxis_title="pace (min/km)",
     )
 
