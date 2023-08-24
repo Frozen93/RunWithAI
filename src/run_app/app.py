@@ -196,7 +196,7 @@ def activity_heatmap(df):
         'November',
         'December',
     ]
-    months_string = '                                '.join(months)
+    months_string = '                                   '.join(months)
     for ann in fig.layout.annotations:
         if ann.text != "0":
             try:
@@ -395,7 +395,7 @@ def main():
             st.video("https://www.youtube.com/watch?v=OZReo8VwLSQ", start_time=42)
 
         st.subheader("Ask the AI any question related to your running data")
-        user_input = st.text_input("Your question:", "")
+        user_input = st.text_input("Your question:", "Show me my longest run!")
         if user_input:
             try:
                 with st.spinner("AI at work!"):
