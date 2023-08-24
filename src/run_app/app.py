@@ -83,7 +83,7 @@ def distance_threshold(df):
         value=4,
         step=1,
     )
-    df = df[df["distance_meters"] >= dist_threshold]
+    df = df[df["distance"] >= dist_threshold]
     return df
 
 
@@ -99,18 +99,18 @@ def display_comparison_metrics(df: pd.DataFrame):
     ]
 
     total_records_all = round(df.shape[0], 2)
-    total_distance_all = round(df["distance_meters"].sum() / 1000, 2)
+    total_distance_all = round(df["distance"].sum() / 1000, 2)
     avg_pace_all = round(df["pace"].mean(), 2)
 
     metrics_last_30 = {
         "Total Records": round(last_30_days.shape[0], 2),
-        "Total Distance": round(last_30_days["distance_meters"].sum() / 1000, 2),
+        "Total Distance": round(last_30_days["distance"].sum() / 1000, 2),
         "Average Pace": round(last_30_days["pace"].mean(), 2),
     }
 
     metrics_prev_30 = {
         "Total Records": round(previous_30_days.shape[0], 2),
-        "Total Distance": round(previous_30_days["distance_meters"].sum() / 1000, 2),
+        "Total Distance": round(previous_30_days["distance"].sum() / 1000, 2),
         "Average Pace": round(previous_30_days["pace"].mean(), 2),
     }
 
@@ -157,7 +157,7 @@ def activity_heatmap(df):
         day_of_week = row["date"].weekday()
 
         full_dates[day_of_week][week_of_year] = row["date"].strftime("%Y-%m-%d")
-        distances[day_of_week][week_of_year] = row["distance_meters"] / 1000
+        distances[day_of_week][week_of_year] = row["distance"] / 1000
 
     colorscale = [
         [0.0, "rgba(10, 10, 10, 1)"],
@@ -370,7 +370,7 @@ def main():
             )
 
         metrics_list = [
-            "distance_meters",
+            "distance",
             "average_heartrate",
             "pace",
             "moving_time_seconds",

@@ -35,7 +35,7 @@ def plot_distance_histogram(df):
     fig = go.Figure(
         data=[
             go.Histogram(
-                x=df["distance_meters"],
+                x=df["distance"],
                 nbinsx=50,
                 marker_color="rgba(231, 29, 54, 0.5)",
                 marker=dict(line=dict(color="rgba(238, 98, 116, 0.8)", width=1)),
@@ -53,7 +53,7 @@ def plot_distance_histogram(df):
 
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     st.subheader("Metrics Over Time")
-    selected_metrics = st.multiselect("Select metrics to plot:", metrics, default=["distance_meters"])
+    selected_metrics = st.multiselect("Select metrics to plot:", metrics, default=["distance"])
     months_back = st.slider("Select how many months to view:", 1, 24, 6)
     end_date = df["date"].max()
     start_date = end_date - pd.dateOffset(months=months_back)
@@ -101,13 +101,13 @@ def plot_monthly_avg_pace(df: pd.DataFrame):
 
 @st.cache_data
 def plot_cumulative_kms_per_month(df: pd.DataFrame):
-    monthly_sum = df.groupby("month-year")["distance_meters"].sum().reset_index()
+    monthly_sum = df.groupby("month-year")["distance"].sum().reset_index()
     fig = go.Figure(
         data=[
             go.Bar(
-                y=monthly_sum["distance_meters"],
+                y=monthly_sum["distance"],
                 x=monthly_sum["month-year"],
-                name="distance_meters",
+                name="distance",
                 marker_color="rgba(60, 75, 255, 0.6)",
                 marker=dict(line=dict(color="rgba(137, 146, 255, 0.8)", width=1)),
             )
