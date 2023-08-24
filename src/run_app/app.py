@@ -91,24 +91,16 @@ def display_comparison_metrics(df: pd.DataFrame):
     Displays a comparison of metrics for the last 30 days against the previous 30 days.
     Additionally, shows the overall metrics for the entire dataset.
     """
-
-    # Extract the end date of the dataset for calculation reference
     end_date = df["Date"].max()
-
-    # Compute metrics for the last 30 days
     last_30_days = df[(df["Date"] <= end_date) & (df["Date"] > end_date - pd.Timedelta(days=30))]
-
-    # Compute metrics for the previous 30 days
     previous_30_days = df[
         (df["Date"] <= end_date - pd.Timedelta(days=30)) & (df["Date"] > end_date - pd.Timedelta(days=60))
     ]
 
-    # Compute metrics for the entire dataset
     total_records_all = round(df.shape[0], 2)
     total_distance_all = round(df["Distance"].sum(), 2)
     avg_pace_all = round(df["Pace"].mean(), 2)
 
-    # Define metrics
     metrics_last_30 = {
         "Total Records": round(last_30_days.shape[0], 2),
         "Total Distance": round(last_30_days["Distance"].sum(), 2),
@@ -127,7 +119,6 @@ def display_comparison_metrics(df: pd.DataFrame):
         "Average Pace": avg_pace_all,
     }
 
-    # Display metrics in Streamlit
     col1, col2, col3 = st.columns([1, 1, 1])
 
     with col1:
@@ -244,26 +235,19 @@ def activity_heatmap(df):
 
 
 def wrap_text(text, width=140):
-    # Unwrap the text first to remove any existing line breaks
     unwrapped_text = ' '.join(text.splitlines())
-    # Use textwrap to wrap the text
     return '\n'.join(textwrap.wrap(unwrapped_text, width=width))
 
 
 def separate_table(content):
-    # Split the content into lines
     lines = content.split('\n')
-
-    # Find the delimiter row (which typically follows the header row)
     table_start_index = -1
     for index, line in enumerate(lines):
         if set(line.strip()) <= {'-', '|', ' '}:
-            table_start_index = index - 1  # Assuming the previous line is the header
+            table_start_index = index - 1
             break
 
-    # If we found a table start
     if table_start_index != -1:
-        # Gather the table lines
         table_lines = [lines[table_start_index]]
         for line in lines[table_start_index + 1 :]:
             if "|" in line:
@@ -271,7 +255,6 @@ def separate_table(content):
             else:
                 break
 
-        # Separate the table from the rest
         before_table = '\n'.join(lines[:table_start_index])
         table_content = '\n'.join(table_lines)
         after_table = '\n'.join(lines[table_start_index + len(table_lines) :])
@@ -300,11 +283,7 @@ def fetch_gpt_response_test(query):
                 delta = choice.get('delta', {})
                 content_chunk = delta.get('content', "")
                 accumulated_content += content_chunk
-
-                # Separate table content
                 before_table, table_content, after_table = separate_table(accumulated_content)
-
-                # Only wrap the non-table content
                 formatted_content = wrap_text(before_table) + table_content + wrap_text(after_table)
                 yield formatted_content
 
@@ -327,13 +306,12 @@ def fetch_gpt_response(query):
                 choice = json_data.get('choices', [{}])[0]
                 delta = choice.get('delta', {})
                 content_chunk = delta.get('content', "")
-                accumulated_content += content_chunk  # Accumulate the content
+                accumulated_content += content_chunk
                 formatted_content = wrap_text(accumulated_content)
                 yield formatted_content
 
 
 def init_langchain_agent(df):
-    # Initialize agent
     return create_pandas_dataframe_agent(
         ChatOpenAI(temperature=0, model="gpt-4", openai_api_key=st.secrets['gpt4_key']),
         df,
@@ -348,10 +326,10 @@ def old_chatbot():
     user_input = st.text_input("Ask the AI about your running:")
 
     if st.button("Submit"):
-        placeholder = st.empty()  # Placeholder for dynamic content
+        placeholder = st.empty()
         for accumulated_response in fetch_gpt_response_test(base_promt + user_input):
-            placeholder.markdown(accumulated_response)  # Update Streamlit with the accumulated text
-            time.sleep(0.5)  # Optional: To slow down the streaming for better visualization
+            placeholder.markdown(accumulated_response)
+            time.sleep(0.5)
 
     st.markdown("___")
 
@@ -398,7 +376,6 @@ def main():
         "Temperature",
     ]
 
-    # plot_selected_metrics(df, metrics_list)
     plots.plot_scatter_metrics_with_regression(df, metrics_list)
 
     a, _, b = st.columns((6, 1, 6))
@@ -410,27 +387,23 @@ def main():
         plots.plot_pace_distribution(df)
         plots.plot_distance_histogram(df)
 
+    st.markdown("### Ressources")
+    with a:
+        st.video("https://www.youtube.com/watch?v=OZReo8VwLSQ", start_time=42)
+
     st.subheader("Ask the AI any question related to your running data")
-
     user_input = st.text_input("Your question:", "")
-
     if user_input:
         try:
-            # This is where you initialize and run your langchain agent.
             with st.spinner("AI at work!"):
                 response = init_langchain_agent(df).run(user_input)
                 st.markdown(response)
-
         except ValidationError:
             st.error("API Key Validation failed. Ensure your API key is correctly configured.")
-
         except ImportError:
             st.error("A required library is missing. Ensure you've installed all dependencies.")
-
         except OutputParserException:
             st.error("There was an error parsing the response. Please try a different query or check your data.")
-
-        # Any other exceptions can be caught with a generic message
         except Exception as e:
             st.error(f"An unexpected error occurred: {str(e)}")
 
