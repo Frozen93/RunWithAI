@@ -3,6 +3,8 @@ import arrow
 import httpx
 import streamlit as st
 import pandas as pd
+import os
+
 
 # import sweat
 from bokeh.models.widgets import Div
@@ -25,7 +27,9 @@ def load_image_as_base64(image_path):
 
 
 def powered_by_strava_logo():
-    base64_image = load_image_as_base64("./images/by_strava.png")
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    image_path = os.path.join(current_directory, 'images', 'strava.png')
+    base64_image = load_image_as_base64(image_path)
     st.markdown(
         f'<img src="data:image/png;base64,{base64_image}" width="100%" alt="powered by strava">',
         unsafe_allow_html=True,
@@ -56,8 +60,9 @@ def login_header(header=None):
     else:
         col1, _, _, button = header
         base = button
-
-    base64_image = load_image_as_base64("./images/strava.png")
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    image_path = os.path.join(current_directory, 'images', 'strava.png')
+    base64_image = load_image_as_base64(image_path)
     base.markdown(
         (
             f"<a href=\"{strava_authorization_url}\">"
