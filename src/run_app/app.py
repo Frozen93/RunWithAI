@@ -196,7 +196,7 @@ def activity_heatmap(df):
         'November',
         'December',
     ]
-    months_string = '                          '.join(months)
+    months_string = '                           '.join(months)
     for ann in fig.layout.annotations:
         if ann.text != "0":
             try:
@@ -390,8 +390,8 @@ def main():
             plots.plot_pace_distribution(df)
             plots.plot_distance_histogram(df)
 
-        st.markdown("### Ressources")
         with a:
+            st.markdown("### Ressources")
             st.video("https://www.youtube.com/watch?v=OZReo8VwLSQ", start_time=42)
 
         st.subheader("Ask the AI any question related to your running data")
