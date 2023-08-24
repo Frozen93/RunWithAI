@@ -232,7 +232,7 @@ def activity_heatmap(df):
     )
     for ann in fig.layout.annotations:
         ann.font.size = 14
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=False)
 
 
 def wrap_text(text, width=140):
