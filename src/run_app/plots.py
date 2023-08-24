@@ -26,6 +26,7 @@ def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
         title=f"Scatter Plot of {metric_x} vs {metric_y} with Regression Line",
         xaxis_title=metric_x,
         yaxis_title=metric_y,
+        showlegend=False,
     )
     st.plotly_chart(fig, use_container_width=True)
     st.markdown(f"**Correlation Coefficient between {metric_x} and {metric_y}:** {correlation:.2f}")
@@ -66,7 +67,7 @@ def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     fig = go.Figure()
     for metric in selected_metrics:
         fig.add_trace(
-            go.Scatter(
+            go.color(
                 x=df["date"],
                 y=df[metric],
                 mode="lines",
