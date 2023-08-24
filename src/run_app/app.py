@@ -321,20 +321,6 @@ def init_langchain_agent(df):
     )
 
 
-def old_chatbot():
-    st.markdown("___")
-    base_promt = f"You are the running coach of the runner with the following data: {df.to_json()}, answer his questions short and to the point. Underline your statements with numbers to show improvement. Use the metric system and provide paces in min/km, distances in km . Mention times in minutes, not seconds. Provide a helpful table in the beginning. Question:  "
-    user_input = st.text_input("Ask the AI about your running:")
-
-    if st.button("Submit"):
-        placeholder = st.empty()
-        for accumulated_response in fetch_gpt_response_test(base_promt + user_input):
-            placeholder.markdown(accumulated_response)
-            time.sleep(0.5)
-
-    st.markdown("___")
-
-
 def main():
     """Main function of the Streamlit App."""
     setup_config()
@@ -342,18 +328,12 @@ def main():
 
     l, r, _ = st.columns((1, 1, 4))
     with l:
-        st.header("AI Runner")
+        st.markdown("# AI Runner")
     with r:
         st_lottie(
             "https://lottie.host/a2b2ddf8-f030-46fa-b3b2-8c1727afb253/h2zfkvSzpy.json",
             height=120,
         )
-
-    data_url = (
-        "https://docs.google.com/spreadsheets/d/139ckZPhjRzwmDayTSwSVXzIZUlwMGPqqTQwNg3EIKj0/export?format=csv&gid=0"
-    )
-    # df_raw = load_data(data_url)
-    ####
     strava_header = strava.header()
     strava_auth = strava.authenticate(header=strava_header, stop_if_unauthenticated=False)
     if strava_auth:
@@ -364,21 +344,16 @@ def main():
             try:
                 df_page = strava.dataframe_from_strava(strava_auth, page_num)
 
-                # If the fetched page is empty, break the loop
                 if df_page.empty:
                     break
 
-                # Concatenate the fetched data to the main DataFrame
                 df_raw = pd.concat([df_raw, df_page], ignore_index=True)
-                page_num += 1  # Increment the page number
+                page_num += 1
 
             except Exception as e:
-                # Handle specific errors if required, for now, we'll print the error and break
                 print(f"Error on page {page_num}: {e}")
                 break
         df_raw = strava.load_strava_data(df_raw)
-
-        ###
 
         activity_heatmap(df_raw)
         pace, threshold = st.columns(2)

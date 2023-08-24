@@ -28,10 +28,10 @@ def load_image_as_base64(image_path):
 
 def powered_by_strava_logo():
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    image_path = os.path.join(current_directory, 'images', 'strava.png')
+    image_path = os.path.join(current_directory, 'images', 'by_strava.png')
     base64_image = load_image_as_base64(image_path)
     st.markdown(
-        f'<img src="data:image/png;base64,{base64_image}" width="100%" alt="powered by strava">',
+        f'<img src="data:image/png;base64,{base64_image}" width="50%" alt="powered by strava">',
         unsafe_allow_html=True,
     )
 
@@ -54,19 +54,19 @@ def authorization_url():
 
 def login_header(header=None):
     strava_authorization_url = authorization_url()
-
     if header is None:
         base = st
     else:
-        col1, _, _, button = header
+        button = header
         base = button
     current_directory = os.path.dirname(os.path.abspath(__file__))
     image_path = os.path.join(current_directory, 'images', 'strava.png')
     base64_image = load_image_as_base64(image_path)
+
     base.markdown(
         (
             f"<a href=\"{strava_authorization_url}\">"
-            f"  <img alt=\"strava login\" src=\"data:image/png;base64,{base64_image}\" width=\"100%\">"
+            f"  <img alt=\"strava login\" src=\"data:image/png;base64,{base64_image}\" width=\"20%\">"
             f"</a>"
         ),
         unsafe_allow_html=True,
@@ -77,10 +77,8 @@ def logout_header(header=None):
     if header is None:
         base = st
     else:
-        _, col2, _, button = header
+        button = header
         base = button
-    with col2:
-        powered_by_strava_logo()
 
     if base.button("Log out"):
         js = f"window.location.href = '{APP_URL}'"
@@ -93,7 +91,7 @@ def logged_in_title(strava_auth, header=None):
     if header is None:
         base = st
     else:
-        col, _, _, _ = header
+        col = header
         base = col
 
     first_name = strava_auth["athlete"]["firstname"]
@@ -147,12 +145,9 @@ def authenticate(header=None, stop_if_unauthenticated=True):
 
 
 def header():
-    col1, col2, col3 = st.columns(3)
+    strava_button = st.empty()
 
-    with col3:
-        strava_button = st.empty()
-
-    return col1, col2, col3, strava_button
+    return strava_button
 
 
 @st.cache_data
