@@ -395,7 +395,7 @@ def main():
             st.video("https://www.youtube.com/watch?v=OZReo8VwLSQ", start_time=42)
 
         st.subheader("Ask the AI any question related to your running data")
-        st.markdown("You can try *Show me my longest run!*")
+        st.markdown("*Example: Show me my longest run!*")
         user_input = st.text_input("Your question:", "")
         if user_input:
             try:
