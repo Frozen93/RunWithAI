@@ -25,6 +25,7 @@ httpx = "^0.24.1"
 stravalib = "0.10.2"
 pandas = "^2.0.3"
 bokeh = "2.4.3"
+arrow = "^1.2.3"
 
 
 [build-system]
