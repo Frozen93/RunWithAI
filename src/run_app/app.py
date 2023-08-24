@@ -1,26 +1,24 @@
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
 from streamlit_lottie import st_lottie
 import plotly.figure_factory as ff
 from langchain.agents import create_pandas_dataframe_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.agents.agent_types import AgentType
-from langchain.llms import OpenAI
 from pydantic import ValidationError
 from langchain.agents.openai_functions_agent.base import OutputParserException
 import requests
 import json
 import time
 import textwrap
-import numpy as np
+import plots
 
 
 def setup_config():
     """Configures Streamlit app settings."""
     st.set_page_config(
         page_title="Run with AI",
-        page_icon="🧊",
+        page_icon="💧",
         layout="wide",
     )
     st.markdown(
@@ -86,187 +84,6 @@ def distance_threshold(df):
     )
     df = df[df["Distance"] >= dist_threshold]
     return df
-
-
-def plot_distance_histogram(df):
-    # Create histogram
-    fig = go.Figure(
-        data=[
-            go.Histogram(
-                x=df["Distance"],
-                nbinsx=50,
-                marker_color="rgba(231, 29, 54, 0.5)",  # Adjusted the color to include transparency
-                marker=dict(line=dict(color="rgba(238, 98, 116, 0.8)", width=1)),  # Outline: black, 1px width
-            ),
-        ]
-    )
-
-    # Update layout for better visualization
-    fig.update_layout(
-        title="Distribution of Running Distances",
-        xaxis_title="Distance (km)",
-        yaxis_title="Number of Runs",
-        bargap=0.1,
-    )
-
-    # Display histogram in Streamlit
-    st.plotly_chart(fig, use_container_width=True)
-
-
-def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
-    """Plots two selected metrics in a scatter plot with a regression line."""
-    st.subheader("Check for correlations with a regression line")
-
-    # Allow users to select two numeric metrics
-    metric_x = st.selectbox("Select metric for x-axis:", metrics, index=0)
-    metric_y = st.selectbox("Select metric for y-axis:", metrics, index=1)
-
-    # Calculate the correlation coefficient
-    correlation = df[metric_x].corr(df[metric_y])
-
-    # Create the scatter plot
-    fig = go.Figure(data=go.Scatter(x=df[metric_x], y=df[metric_y], mode="markers", marker=dict(size=5), name="Data"))
-
-    # Add regression line using numpy
-    try:
-        m, b = np.polyfit(df[metric_x], df[metric_y], 1)
-        fig.add_trace(go.Scatter(x=df[metric_x], y=m * df[metric_x] + b, mode="lines", name="Regression Line"))
-    except:
-        st.warning("Something was wrong with the data, try another metric")
-
-    # Update layout
-    fig.update_layout(
-        title=f"Scatter Plot of {metric_x} vs {metric_y} with Regression Line",
-        xaxis_title=metric_x,
-        yaxis_title=metric_y,
-    )
-
-    st.plotly_chart(fig, use_container_width=True)
-
-    # Display the correlation coefficient
-    st.markdown(f"**Correlation Coefficient between {metric_x} and {metric_y}:** {correlation:.2f}")
-
-
-def plot_selected_metrics(df: pd.DataFrame, metrics: list):
-    """Plots the selected metrics over time."""
-    st.subheader("Metrics Over Time")
-    selected_metrics = st.multiselect("Select metrics to plot:", metrics, default=["Distance"])
-
-    # Allow users to select the number of months they want to see into the past
-    months_back = st.slider(
-        "Select how many months to view:", 1, 24, 6
-    )  # Example: from 1 to 24 months with a default of 6 months
-
-    # Calculate the starting date based on the selected number of months
-    end_date = df["Date"].max()
-    start_date = end_date - pd.DateOffset(months=months_back)
-
-    # Filter the dataframe based on the calculated date range
-    df = df[(df["Date"] >= start_date) & (df["Date"] <= end_date)]
-
-    if not selected_metrics:
-        st.warning("Please select at least one metric to plot.")
-        return
-
-    fig = go.Figure()
-    for metric in selected_metrics:
-        fig.add_trace(
-            go.Scatter(
-                x=df["Date"],
-                y=df[metric],
-                mode="lines",
-                name=metric,
-            )
-        )
-    fig.update_layout(title="Metrics Over Time", xaxis_title="Date")
-    fig.update_xaxes(range=[df["Date"].min(), df["Date"].max()])
-    st.plotly_chart(fig, use_container_width=True)
-
-
-@st.cache_data
-def plot_monthly_avg_pace(df: pd.DataFrame):
-    """Plots the average pace for every month using plotly."""
-
-    # Group by "Month-Year" and calculate the average pace
-    monthly_avg = df.groupby("Month-Year")["Pace"].mean().reset_index()
-
-    # Plot the monthly average pace using plotly
-    fig = go.Figure(
-        data=[
-            go.Bar(
-                x=monthly_avg["Month-Year"],
-                y=monthly_avg["Pace"],
-                marker_color="rgba(164, 61, 174, 0.62)",
-                marker=dict(line=dict(color="rgba(195, 108, 203, 0.8)", width=1)),
-            )
-        ]
-    )
-    fig.update_layout(
-        title="Average Pace per Month",
-        xaxis_title="Month-Year",
-        yaxis_title="Average Pace",
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-
-@st.cache_data
-def plot_cumulative_kms_per_month(df: pd.DataFrame):
-    """Plots the total distance for every month using a box plot in plotly."""
-    monthly_sum = df.groupby("Month-Year")["Distance"].sum().reset_index()
-    fig = go.Figure(
-        data=[
-            go.Bar(
-                y=monthly_sum["Distance"],
-                x=monthly_sum["Month-Year"],
-                name="Distance",
-                marker_color="rgba(60, 75, 255, 0.6)",
-                marker=dict(line=dict(color="rgba(137, 146, 255, 0.8)", width=1)),  # Outline: black, 1px width
-            )
-        ]
-    )
-
-    fig.update_layout(
-        title="Total Distance per Month",
-        xaxis_title="Month-Year",
-        yaxis_title="Total Distance",
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-
-def plot_pace_distribution(df):
-    df["YearMonth"] = df["Date"].dt.strftime("%Y-%m")
-
-    # Create the box plot using graph_objects
-    fig = go.Figure()
-
-    months = sorted(df["YearMonth"].unique())
-    for month in months:
-        month_data = df[df["YearMonth"] == month]
-        fig.add_trace(
-            go.Box(
-                y=month_data["Pace"],
-                name=month,
-                boxpoints=False,  # Disable showing all points
-                hoverinfo="y+name",
-                customdata=month_data["Pace"],
-                showlegend=False,
-                line=dict(color="#f77f00"),
-                hovertemplate=(
-                    "Min: %{customdata.min}<br>"
-                    "Max: %{customdata.max}<br>"
-                    "Median: %{customdata.median}<br>"
-                    "Month-Year: %{name}"
-                ),
-            )
-        )
-
-    fig.update_layout(
-        title="Distribution of Pace for Each Month",
-        xaxis_title="Month-Year",
-        yaxis_title="Pace (min/km)",
-    )
-
-    st.plotly_chart(fig, use_container_width=True)
 
 
 def display_comparison_metrics(df: pd.DataFrame):
@@ -373,7 +190,21 @@ def activity_heatmap(df):
         ygap=3,
     )
     heatmap_annotations = []
-
+    months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ]
+    months_string = '                          '.join(months)
     for ann in fig.layout.annotations:
         if ann.text != "0":
             try:
@@ -385,8 +216,8 @@ def activity_heatmap(df):
     all_annotations = heatmap_annotations + [
         dict(
             x=0.5,
-            y=-0.01,
-            text="Jan                 Feb                 Mar                 Apr                 Mai                 Jun                 Jul                 Aug                 Sep                 Okt                 Nov                 Dez",  # x-axis title
+            y=0.1,
+            text=months_string,
             xref="paper",
             yref="paper",
             align="center",
@@ -394,21 +225,21 @@ def activity_heatmap(df):
     ]
 
     fig.update_layout(
-        title="Distance Run - Every day of the year!",
         autosize=False,
         yaxis_title="Mon Tue Wed Thu Fr Sat Sun",
-        width=1800,  # 7 boxes * 100 pixels/box + 30 pixels for padding
-        height=500,  # 52 boxes * 7 pixels/box + 15 pixels for padding
+        width=1800,
+        height=500,
         xaxis=dict(constrain="domain", showgrid=False, zeroline=False, showline=False),
         yaxis=dict(scaleanchor="x", showgrid=False, zeroline=False, showline=False),
         annotations=all_annotations,
+        margin=dict(t=0, r=0, b=100, l=0),
     )
     fig.update_yaxes(
         tickvals=list(range(7)),
         ticktext=["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     )
     for ann in fig.layout.annotations:
-        ann.font.size = 9
+        ann.font.size = 14
     st.plotly_chart(fig, use_container_width=True)
 
 
@@ -530,28 +361,26 @@ def main():
     setup_config()
     apply_styles()
 
-    l, r = st.columns(2)
+    l, r, _ = st.columns((1, 1, 4))
     with l:
         st.header("AI Runner")
     with r:
         st_lottie(
             "https://lottie.host/a2b2ddf8-f030-46fa-b3b2-8c1727afb253/h2zfkvSzpy.json",
-            height=110,
+            height=120,
         )
 
     data_url = (
         "https://docs.google.com/spreadsheets/d/139ckZPhjRzwmDayTSwSVXzIZUlwMGPqqTQwNg3EIKj0/export?format=csv&gid=0"
     )
-    df = load_data(data_url)
-    # df = df[df["Date"] >= "2023-01-01"]
+    df_raw = load_data(data_url)
 
+    activity_heatmap(df_raw)
     pace, threshold = st.columns(2)
     with pace:
-        df = pace_threshold(df)
+        df = pace_threshold(df_raw)
     with threshold:
-        df = distance_threshold(df)
-
-    activity_heatmap(df)
+        df = distance_threshold(df_raw)
     display_comparison_metrics(df)
 
     with st.expander("Show raw data"):
@@ -570,16 +399,16 @@ def main():
     ]
 
     # plot_selected_metrics(df, metrics_list)
-    plot_scatter_metrics_with_regression(df, metrics_list)
+    plots.plot_scatter_metrics_with_regression(df, metrics_list)
 
     a, _, b = st.columns((6, 1, 6))
     with a:
-        plot_cumulative_kms_per_month(df)
-        plot_monthly_avg_pace(df)
+        plots.plot_cumulative_kms_per_month(df)
+        plots.plot_monthly_avg_pace(df)
 
     with b:
-        plot_pace_distribution(df)
-        plot_distance_histogram(df)
+        plots.plot_pace_distribution(df)
+        plots.plot_distance_histogram(df)
 
     st.subheader("Ask the AI any question related to your running data")
 
