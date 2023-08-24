@@ -19,7 +19,6 @@ def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
             x=df[metric_x],
             y=df[metric_y],
             mode="markers",
-            marker=dict(size=5),
             marker=dict(size=5, color="rgba(137, 146, 255, 0.8)"),
             name="Data",
         )
