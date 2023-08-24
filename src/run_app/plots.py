@@ -14,7 +14,16 @@ def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
     df[metric_y] = pd.to_numeric(df[metric_y], errors='coerce')
 
     correlation = df[metric_x].corr(df[metric_y])
-    fig = go.Figure(data=go.Scatter(x=df[metric_x], y=df[metric_y], mode="markers", marker=dict(size=5), name="Data"))
+    fig = go.Figure(
+        data=go.Scatter(
+            x=df[metric_x],
+            y=df[metric_y],
+            mode="markers",
+            marker=dict(size=5),
+            marker=dict(size=5, color="rgba(137, 146, 255, 0.8)"),
+            name="Data",
+        )
+    )
 
     try:
         m, b = np.polyfit(df[metric_x], df[metric_y], 1)
@@ -24,7 +33,7 @@ def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
                 y=m * df[metric_x] + b,
                 mode="lines",
                 name="Regression Line",
-                line=dict(color="rgba(137, 146, 255, 0.8)", width=1),
+                line=dict(color="rgba(238, 98, 116, 0.8)", width=1),
             )
         )
     except:
