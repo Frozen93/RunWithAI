@@ -213,8 +213,8 @@ def select_strava_activity(auth):
     return activity
 
 
-def dataframe_from_strava(auth):
-    activities = get_activities(auth)
+def dataframe_from_strava(auth, page=1):
+    activities = get_activities(auth, page)
 
     # Initialize empty lists for each column
     dates = []
@@ -294,10 +294,12 @@ def speed_to_pace(speed):
 
 
 @st.cache_data
-def load_strava_data(data) -> pd.DataFrame:
+def load_strava_data(data: pd.DataFrame) -> pd.DataFrame:
     """Loads and preprocesses running data."""
+    data = data.copy()
     data = data[data['type'] == "Run"]
-    data["date"] = pd.to_datetime(data["date"])
+    data["date"] = pd.to_datetime(data["date"], errors='coerce')
+    data = data.dropna(subset=['date'])
     data["month-year"] = data["date"].dt.strftime("%Y-%m")
     data.loc[:, "pace"] = data["average_speed_metres_per_second"].apply(speed_to_pace)
     data = data[data["date"] >= "2023-01-01"]

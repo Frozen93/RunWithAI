@@ -12,6 +12,7 @@ import json
 import time
 import textwrap
 import plots
+import strava
 
 
 def setup_config():
@@ -51,12 +52,12 @@ def apply_styles():
 def load_data(data_source: str) -> pd.DataFrame:
     """Loads and preprocesses running data."""
     data = pd.read_csv(data_source)
-    data["Date"] = pd.to_datetime(data["Date"])
-    data["Month-Year"] = data["Date"].dt.strftime("%Y-%m")
-    data["Pace"] = data["Pace"].apply(convert_pace)
+    data["date"] = pd.to_datetime(data["date"])
+    data["Month-Year"] = data["date"].dt.strftime("%Y-%m")
+    data["pace"] = data["pace"].apply(convert_pace)
 
-    data = data[data["Date"] >= "2023-01-01"]
-    return data.sort_values(by="Date")
+    data = data[data["date"] >= "2023-01-01"]
+    return data.sort_values(by="date")
 
 
 def convert_pace(pace):
@@ -72,7 +73,7 @@ def pace_threshold(df):
         value=7.2,
         step=0.1,
     )
-    df = df[df["Pace"] <= pace_threshold]
+    df = df[df["pace"] <= pace_threshold]
     return df
 
 
@@ -82,7 +83,7 @@ def distance_threshold(df):
         value=4,
         step=1,
     )
-    df = df[df["Distance"] >= dist_threshold]
+    df = df[df["distance_meters"] >= dist_threshold]
     return df
 
 
@@ -91,26 +92,26 @@ def display_comparison_metrics(df: pd.DataFrame):
     Displays a comparison of metrics for the last 30 days against the previous 30 days.
     Additionally, shows the overall metrics for the entire dataset.
     """
-    end_date = df["Date"].max()
-    last_30_days = df[(df["Date"] <= end_date) & (df["Date"] > end_date - pd.Timedelta(days=30))]
+    end_date = df["date"].max()
+    last_30_days = df[(df["date"] <= end_date) & (df["date"] > end_date - pd.Timedelta(days=30))]
     previous_30_days = df[
-        (df["Date"] <= end_date - pd.Timedelta(days=30)) & (df["Date"] > end_date - pd.Timedelta(days=60))
+        (df["date"] <= end_date - pd.Timedelta(days=30)) & (df["date"] > end_date - pd.Timedelta(days=60))
     ]
 
     total_records_all = round(df.shape[0], 2)
-    total_distance_all = round(df["Distance"].sum(), 2)
-    avg_pace_all = round(df["Pace"].mean(), 2)
+    total_distance_all = round(df["distance_meters"].sum() / 1000, 2)
+    avg_pace_all = round(df["pace"].mean(), 2)
 
     metrics_last_30 = {
         "Total Records": round(last_30_days.shape[0], 2),
-        "Total Distance": round(last_30_days["Distance"].sum(), 2),
-        "Average Pace": round(last_30_days["Pace"].mean(), 2),
+        "Total Distance": round(last_30_days["distance_meters"].sum() / 1000, 2),
+        "Average Pace": round(last_30_days["pace"].mean(), 2),
     }
 
     metrics_prev_30 = {
         "Total Records": round(previous_30_days.shape[0], 2),
-        "Total Distance": round(previous_30_days["Distance"].sum(), 2),
-        "Average Pace": round(previous_30_days["Pace"].mean(), 2),
+        "Total Distance": round(previous_30_days["distance_meters"].sum() / 1000, 2),
+        "Average Pace": round(previous_30_days["pace"].mean(), 2),
     }
 
     metrics_all_time = {
@@ -152,11 +153,11 @@ def activity_heatmap(df):
     full_dates = [["" for _ in range(52)] for _ in range(7)]
 
     for _, row in df.iterrows():
-        week_of_year = row["Date"].isocalendar()[1] - 1
-        day_of_week = row["Date"].weekday()
+        week_of_year = row["date"].isocalendar()[1] - 1
+        day_of_week = row["date"].weekday()
 
-        full_dates[day_of_week][week_of_year] = row["Date"].strftime("%Y-%m-%d")
-        distances[day_of_week][week_of_year] = row["Distance"]
+        full_dates[day_of_week][week_of_year] = row["date"].strftime("%Y-%m-%d")
+        distances[day_of_week][week_of_year] = row["distance_meters"] / 1000
 
     colorscale = [
         [0.0, "rgba(10, 10, 10, 1)"],
@@ -351,61 +352,89 @@ def main():
     data_url = (
         "https://docs.google.com/spreadsheets/d/139ckZPhjRzwmDayTSwSVXzIZUlwMGPqqTQwNg3EIKj0/export?format=csv&gid=0"
     )
-    df_raw = load_data(data_url)
+    # df_raw = load_data(data_url)
+    ####
+    strava_header = strava.header()
+    strava_auth = strava.authenticate(header=strava_header, stop_if_unauthenticated=False)
+    if strava_auth:
+        df_raw = pd.DataFrame()  # Start with an empty DataFrame
+        page_num = 1
 
-    activity_heatmap(df_raw)
-    pace, threshold = st.columns(2)
-    with pace:
-        df = pace_threshold(df_raw)
-    with threshold:
-        df = distance_threshold(df_raw)
-    display_comparison_metrics(df)
+        while True:
+            try:
+                # Fetch data for the current page
+                df_page = strava.dataframe_from_strava(strava_auth, page_num)
 
-    with st.expander("Show raw data"):
-        st.dataframe(
-            df.drop(columns=["ID", "Average Speed", "Time_sec"]),
-            use_container_width=True,
-        )
+                # If the fetched page is empty, break the loop
+                if df_page.empty:
+                    break
 
-    metrics_list = [
-        "Distance",
-        "HeartRate",
-        "Pace",
-        "Time",
-        "ElevGain",
-        "Temperature",
-    ]
+                # Concatenate the fetched data to the main DataFrame
+                df_raw = pd.concat([df_raw, df_page], ignore_index=True)
+                page_num += 1  # Increment the page number
 
-    plots.plot_scatter_metrics_with_regression(df, metrics_list)
+            except Exception as e:
+                # Handle specific errors if required, for now, we'll print the error and break
+                print(f"Error on page {page_num}: {e}")
+                break
+        df_raw = strava.load_strava_data(df_raw)
 
-    a, _, b = st.columns((6, 1, 6))
-    with a:
-        plots.plot_cumulative_kms_per_month(df)
-        plots.plot_monthly_avg_pace(df)
+        ###
 
-    with b:
-        plots.plot_pace_distribution(df)
-        plots.plot_distance_histogram(df)
+        activity_heatmap(df_raw)
+        pace, threshold = st.columns(2)
+        with pace:
+            df = pace_threshold(df_raw)
+        with threshold:
+            df = distance_threshold(df_raw)
+        display_comparison_metrics(df)
 
-    st.markdown("### Ressources")
-    with a:
-        st.video("https://www.youtube.com/watch?v=OZReo8VwLSQ", start_time=42)
+        with st.expander("Show raw data"):
+            st.dataframe(
+                df,
+                use_container_width=True,
+            )
 
-    st.subheader("Ask the AI any question related to your running data")
-    user_input = st.text_input("Your question:", "")
-    if user_input:
-        try:
-            with st.spinner("AI at work!"):
-                response = init_langchain_agent(df).run(user_input)
-                st.markdown(response)
-        except ValidationError:
-            st.error("API Key Validation failed. Ensure your API key is correctly configured.")
-        except ImportError:
-            st.error("A required library is missing. Ensure you've installed all dependencies.")
-        except OutputParserException:
-            st.error("There was an error parsing the response. Please try a different query or check your data.")
-        except Exception as e:
-            st.error(f"An unexpected error occurred: {str(e)}")
+        metrics_list = [
+            "distance_meters",
+            "average_heartrate",
+            "pace",
+            "moving_time_seconds",
+            "total_elevation_gain",
+            "max_heartrate",
+            "suffer_score",
+        ]
+
+        plots.plot_scatter_metrics_with_regression(df, metrics_list)
+
+        a, _, b = st.columns((6, 1, 6))
+        with a:
+            plots.plot_cumulative_kms_per_month(df)
+            plots.plot_monthly_avg_pace(df)
+
+        with b:
+            plots.plot_pace_distribution(df)
+            plots.plot_distance_histogram(df)
+
+        st.markdown("### Ressources")
+        with a:
+            st.video("https://www.youtube.com/watch?v=OZReo8VwLSQ", start_time=42)
+
+        st.subheader("Ask the AI any question related to your running data")
+        user_input = st.text_input("Your question:", "")
+        if user_input:
+            try:
+                with st.spinner("AI at work!"):
+                    response = init_langchain_agent(df).run(user_input)
+                    st.markdown(response)
+            except ValidationError:
+                st.error("API Key Validation failed. Ensure your API key is correctly configured.")
+            except ImportError:
+                st.error("A required library is missing. Ensure you've installed all dependencies.")
+            except OutputParserException:
+                st.error("There was an error parsing the response. Please try a different query or check your data.")
+            except Exception as e:
+                st.error(f"An unexpected error occurred: {str(e)}")
 
 
 if __name__ == "__main__":

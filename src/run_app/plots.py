@@ -9,6 +9,10 @@ def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
     st.subheader("Check for correlations with a regression line")
     metric_x = st.selectbox("Select metric for x-axis:", metrics, index=0)
     metric_y = st.selectbox("Select metric for y-axis:", metrics, index=1)
+    df = df.dropna(subset=[metric_x, metric_y])
+    df[metric_x] = pd.to_numeric(df[metric_x], errors='coerce')
+    df[metric_y] = pd.to_numeric(df[metric_y], errors='coerce')
+
     correlation = df[metric_x].corr(df[metric_y])
     fig = go.Figure(data=go.Scatter(x=df[metric_x], y=df[metric_y], mode="markers", marker=dict(size=5), name="Data"))
 
@@ -31,7 +35,7 @@ def plot_distance_histogram(df):
     fig = go.Figure(
         data=[
             go.Histogram(
-                x=df["Distance"],
+                x=df["distance_meters"],
                 nbinsx=50,
                 marker_color="rgba(231, 29, 54, 0.5)",
                 marker=dict(line=dict(color="rgba(238, 98, 116, 0.8)", width=1)),
@@ -39,8 +43,8 @@ def plot_distance_histogram(df):
         ]
     )
     fig.update_layout(
-        title="Distribution of Running Distances",
-        xaxis_title="Distance (km)",
+        title="Distribution of Running distance_meterss",
+        xaxis_title="distance_meters (km)",
         yaxis_title="Number of Runs",
         bargap=0.1,
     )
@@ -49,11 +53,11 @@ def plot_distance_histogram(df):
 
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     st.subheader("Metrics Over Time")
-    selected_metrics = st.multiselect("Select metrics to plot:", metrics, default=["Distance"])
+    selected_metrics = st.multiselect("Select metrics to plot:", metrics, default=["distance_meters"])
     months_back = st.slider("Select how many months to view:", 1, 24, 6)
-    end_date = df["Date"].max()
-    start_date = end_date - pd.DateOffset(months=months_back)
-    df = df[(df["Date"] >= start_date) & (df["Date"] <= end_date)]
+    end_date = df["date"].max()
+    start_date = end_date - pd.dateOffset(months=months_back)
+    df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
 
     if not selected_metrics:
         st.warning("Please select at least one metric to plot.")
@@ -63,47 +67,47 @@ def plot_selected_metrics(df: pd.DataFrame, metrics: list):
     for metric in selected_metrics:
         fig.add_trace(
             go.Scatter(
-                x=df["Date"],
+                x=df["date"],
                 y=df[metric],
                 mode="lines",
                 name=metric,
             )
         )
-    fig.update_layout(title="Metrics Over Time", xaxis_title="Date")
-    fig.update_xaxes(range=[df["Date"].min(), df["Date"].max()])
+    fig.update_layout(title="Metrics Over Time", xaxis_title="date")
+    fig.update_xaxes(range=[df["date"].min(), df["date"].max()])
     st.plotly_chart(fig, use_container_width=True)
 
 
 @st.cache_data
 def plot_monthly_avg_pace(df: pd.DataFrame):
-    monthly_avg = df.groupby("Month-Year")["Pace"].mean().reset_index()
+    monthly_avg = df.groupby("month-year")["pace"].mean().reset_index()
     fig = go.Figure(
         data=[
             go.Bar(
-                x=monthly_avg["Month-Year"],
-                y=monthly_avg["Pace"],
+                x=monthly_avg["month-year"],
+                y=monthly_avg["pace"],
                 marker_color="rgba(164, 61, 174, 0.62)",
                 marker=dict(line=dict(color="rgba(195, 108, 203, 0.8)", width=1)),
             )
         ]
     )
     fig.update_layout(
-        title="Average Pace per Month",
-        xaxis_title="Month-Year",
-        yaxis_title="Average Pace",
+        title="Average pace per Month",
+        xaxis_title="month-year",
+        yaxis_title="Average pace",
     )
     st.plotly_chart(fig, use_container_width=True)
 
 
 @st.cache_data
 def plot_cumulative_kms_per_month(df: pd.DataFrame):
-    monthly_sum = df.groupby("Month-Year")["Distance"].sum().reset_index()
+    monthly_sum = df.groupby("month-year")["distance_meters"].sum().reset_index()
     fig = go.Figure(
         data=[
             go.Bar(
-                y=monthly_sum["Distance"],
-                x=monthly_sum["Month-Year"],
-                name="Distance",
+                y=monthly_sum["distance_meters"],
+                x=monthly_sum["month-year"],
+                name="distance_meters",
                 marker_color="rgba(60, 75, 255, 0.6)",
                 marker=dict(line=dict(color="rgba(137, 146, 255, 0.8)", width=1)),
             )
@@ -111,41 +115,41 @@ def plot_cumulative_kms_per_month(df: pd.DataFrame):
     )
 
     fig.update_layout(
-        title="Total Distance per Month",
-        xaxis_title="Month-Year",
-        yaxis_title="Total Distance",
+        title="Total distance_meters per Month",
+        xaxis_title="month-year",
+        yaxis_title="Total distance_meters",
     )
     st.plotly_chart(fig, use_container_width=True)
 
 
 def plot_pace_distribution(df):
-    df["YearMonth"] = df["Date"].dt.strftime("%Y-%m")
+    df["YearMonth"] = df["date"].dt.strftime("%Y-%m")
     fig = go.Figure()
     months = sorted(df["YearMonth"].unique())
     for month in months:
         month_data = df[df["YearMonth"] == month]
         fig.add_trace(
             go.Box(
-                y=month_data["Pace"],
+                y=month_data["pace"],
                 name=month,
                 boxpoints=False,
                 hoverinfo="y+name",
-                customdata=month_data["Pace"],
+                customdata=month_data["pace"],
                 showlegend=False,
                 line=dict(color="#f77f00"),
                 hovertemplate=(
                     "Min: %{customdata.min}<br>"
                     "Max: %{customdata.max}<br>"
                     "Median: %{customdata.median}<br>"
-                    "Month-Year: %{name}"
+                    "month-year: %{name}"
                 ),
             )
         )
 
     fig.update_layout(
-        title="Distribution of Pace for Each Month",
-        xaxis_title="Month-Year",
-        yaxis_title="Pace (min/km)",
+        title="Distribution of pace for Each Month",
+        xaxis_title="month-year",
+        yaxis_title="pace (min/km)",
     )
 
     st.plotly_chart(fig, use_container_width=True)
