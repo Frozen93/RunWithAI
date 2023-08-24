@@ -18,7 +18,15 @@ def plot_scatter_metrics_with_regression(df: pd.DataFrame, metrics: list):
 
     try:
         m, b = np.polyfit(df[metric_x], df[metric_y], 1)
-        fig.add_trace(go.Scatter(x=df[metric_x], y=m * df[metric_x] + b, mode="lines", name="Regression Line"))
+        fig.add_trace(
+            go.Scatter(
+                x=df[metric_x],
+                y=m * df[metric_x] + b,
+                mode="lines",
+                name="Regression Line",
+                line=dict(color="rgba(137, 146, 255, 0.8)", width=1),
+            )
+        )
     except:
         st.warning("Something was wrong with the data, try another metric")
 
