@@ -1,3 +1,6 @@
 [theme]
 base="dark"
 secondaryBackgroundColor="#000814"
+
+[runner]
+magicEnabled = false
