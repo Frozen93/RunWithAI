@@ -69,7 +69,7 @@ def convert_pace(pace):
 
 def pace_threshold(df):
     pace_threshold = st.number_input(
-        "Enter a pace threshold (exclude records with pace above/slower than this value):",
+        "Exclude runs slower than this pace (min/km)",
         value=7.2,
         step=0.1,
     )
@@ -79,7 +79,7 @@ def pace_threshold(df):
 
 def distance_threshold(df):
     dist_threshold = st.number_input(
-        "Enter a distance threshold (exclude short runs below this value):",
+        "Exclude runs shorter than this distance (km)",
         value=4,
         step=1,
     )
@@ -196,7 +196,7 @@ def activity_heatmap(df):
         'November',
         'December',
     ]
-    months_string = '                                    '.join(months)
+    months_string = '                                   '.join(months)
     for ann in fig.layout.annotations:
         if ann.text != "0":
             try:
