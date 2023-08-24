@@ -301,7 +301,7 @@ def load_strava_data(data: pd.DataFrame) -> pd.DataFrame:
     data["date"] = pd.to_datetime(data["date"], errors='coerce')
     data = data.dropna(subset=['date'])
     data["month-year"] = data["date"].dt.strftime("%Y-%m")
-    data["distance_meters"] = data["distance"].apply(lambda x: x / 1000)
+    data["distance_km"] = data["distance_meters"].apply(lambda x: x / 1000)
     data.loc[:, "pace"] = data["average_speed_metres_per_second"].apply(speed_to_pace)
     data = data[data["date"] >= "2023-01-01"]
     return data.sort_values(by="date")
