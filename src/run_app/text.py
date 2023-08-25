@@ -5,7 +5,7 @@ texts = {
 | **Lower Body**  | [**Calf Walks**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=1m41s) | Walk on the balls of your feet, emphasizing calf engagement. | 2-3 sets × 10-15m |
 |                 | [**Active Toe Plants**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=1m53s) | While standing tall, actively plant your toes on the ground. | 2-3 sets × 10-15m |
 |                 | [**Heel Walks**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=2m57s) | Walk solely on your heels, keeping the balls of your feet elevated. | 2-3 sets × 10-15m |
-|                 | [**Lunge Circuit**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=3m39s) | Perform a series of lunges, incorporating variations using a medicine ball. | 1 set × 5-6 each side |
+|                 | [**Lunge Circuit**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=3m39s) | Perform a series of lunges, incorporating variations using a medicine ball. | 1 set × 5-6 reps each side |
 | **Hips & Core** | [**Hip Raises**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=3m12s) | Lie on back, knees bent. Lift hips to form a straight line from shoulders to knees. | 2-3 sets × 6-8 reps |
 |                 | [**Theraband**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=5m28s) | Execute a series of leg exercises using a resistance band. | 2-3 sets × 6-8 reps per position |
 |                 | [**Hip Lock and Knee Drive**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=6m30s) | Stand with resistance band anchored at ankle. Drive banded knee up towards chest. | 2-3 sets × 8 reps |
@@ -19,7 +19,7 @@ texts = {
 |                 | [**Opposite Arm Opposite Leg Push**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=4m48s) | Lie on back, push knee against opposite hand for resistance. | 2-3 sets × 10-15 reps |
 | **Flexibility** | [**Kettlebell Lunges**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=5m6s) | Lunge while holding kettlebells, keeping chest upright. | 2-3 sets × 8 reps |
 |                 | [**Single Leg RDLs**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=5m51s) | Holding a kettlebell, hinge at the hip while balancing on one leg. | 2-3 sets × 8 reps |
-| **Balance**     | [**Bosu Balance**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=6m23s) | Stand on a Bosu ball, working on balance and stability. | 2-3 sets × 1-2 min |
+| **Balance**     | [**Bosu Balance**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=6m23s) | Stand on a Bosu ball, working on balance and stability. | 2-3 sets × 15-20 sec |
 | **Flexibility** | [**Slow Controlled Step Up**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=6m40s) | Step up onto a platform slowly, emphasizing control. | 2-3 sets × 8 reps |
 |                 | [**Active Step Up with Knee Drive**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=6m54s) | Step up onto a platform and drive the opposite knee up. | 2-3 sets × 8 reps |
 |                 | [**Lunge to Hip Drive**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=7m19s) | Lunge backward, then drive the hip forward onto a box. | 2-3 sets × 8 reps |
