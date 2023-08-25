@@ -123,6 +123,7 @@ def plot_fatigue_sport(df):
             )
         ]
     )
+    fig.update_layout(margin=dict(t=20, b=50, l=50, r=50))
     st.plotly_chart(
         fig,
         use_container_width=True,
