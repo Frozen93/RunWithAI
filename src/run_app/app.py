@@ -354,7 +354,7 @@ def main():
                 print(f"Error on page {page_num}: {e}")
                 break
         df_raw = strava.load_strava_data(df_raw)
-
+        plots.plot_fatigue_sport(df_raw)
         activity_heatmap(df_raw)
         pace, threshold = st.columns(2)
         with pace:
