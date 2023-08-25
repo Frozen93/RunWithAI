@@ -70,13 +70,23 @@ def plot_distance_histogram(df):
 
 def plot_fatigue_sport(df):
     # Assuming df is your existing dataframe
-    df['HRPR'] = df['average_heartrate'] / df['average_speed_metres_per_second']
+    df['HRPR'] = df['average_heartrate'] / df['average_speed_(m/s)']
 
     # Weekly data calculations
-    df['week'] = df['date'].dt.to_period('W-MON')  # replace 'date_column' with the name of your date column
-    weekly_data = df.groupby('week').agg({'distance_meters': 'sum', 'max_heartrate': 'mean'}).reset_index()
+    df['week'] = df['date_column'].dt.to_period('W-MON')  # replace 'date_column' with the name of your date column
+    weekly_data = (
+        df.groupby('week')
+        .agg(
+            {
+                'distance_meters': 'sum',
+                'max_heartrate': 'mean',
+                'HRPR': 'mean',  # This line was missing in the previous code.
+            }
+        )
+        .reset_index()
+    )
 
-    weekly_data.columns = ['week', 'Weekly Volume', 'Weekly Intensity']
+    weekly_data.columns = ['week', 'Weekly Volume', 'Weekly Intensity', 'HRPR']
 
     # Normalize each metric
     weekly_data['Normalized HRPR'] = (weekly_data['HRPR'] - weekly_data['HRPR'].min()) / (
@@ -88,6 +98,7 @@ def plot_fatigue_sport(df):
     weekly_data['Normalized Intensity'] = (weekly_data['Weekly Intensity'] - weekly_data['Weekly Intensity'].min()) / (
         weekly_data['Weekly Intensity'].max() - weekly_data['Weekly Intensity'].min()
     )
+
     # Compute the fatigue metric
     weekly_data['Fatigue'] = (
         100
@@ -95,6 +106,7 @@ def plot_fatigue_sport(df):
         / 3
     )
 
+    # Assuming the most recent data point is the current fatigue
     current_fatigue = weekly_data['Fatigue'].iloc[-1]
 
     fig = go.Figure(
