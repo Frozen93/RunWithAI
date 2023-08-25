@@ -196,7 +196,7 @@ def activity_heatmap(df):
         'November',
         'December',
     ]
-    months_string = '                      '.join(months)
+    months_string = '             '.join(months)
     for ann in fig.layout.annotations:
         if ann.text != "0":
             try:
