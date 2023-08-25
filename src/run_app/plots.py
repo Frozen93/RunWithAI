@@ -73,6 +73,7 @@ def plot_fatigue_sport(df):
     df['HRPR'] = df['average_heartrate'] / df['average_speed_metres_per_second']
 
     # Weekly data calculations
+    df['date'] = df['date'].dt.tz_localize(None)
     df['week'] = df['date'].dt.to_period('W-MON')  # replace 'date_column' with the name of your date column
     weekly_data = (
         df.groupby('week')
