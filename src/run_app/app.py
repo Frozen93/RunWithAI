@@ -395,6 +395,7 @@ def main():
         with res_a:
             st.markdown("### Ressources")
             st.video("https://www.youtube.com/watch?v=SnNlrFcXjVU")
+            st.video("https://www.youtube.com/watch?v=ANGJPTGREiE")
         with res_b:
             st.markdown("### Summary")
             st.markdown(text.texts["gym_summary"])
