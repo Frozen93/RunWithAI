@@ -149,7 +149,6 @@ def header():
     return strava_button
 
 
-@st.cache_data
 def get_activities(auth, page=1):
     access_token = auth["access_token"]
     response = httpx.get(
@@ -212,7 +211,6 @@ def select_strava_activity(auth):
     return activity
 
 
-@st.cache_data
 def dataframe_from_strava(auth, page=1):
     activities = get_activities(auth, page)
 
@@ -293,7 +291,6 @@ def speed_to_pace(speed):
     return float(f"{minutes}.{seconds:02}")
 
 
-@st.cache_data
 def load_strava_data(data: pd.DataFrame) -> pd.DataFrame:
     """Loads and preprocesses running data."""
     data = data.copy()
