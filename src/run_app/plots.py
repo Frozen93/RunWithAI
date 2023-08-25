@@ -122,7 +122,10 @@ def plot_fatigue_sport(df):
             )
         ]
     )
-    st.plotly_chart(fig, width=140)
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+    )
 
 
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
