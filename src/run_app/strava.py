@@ -279,14 +279,8 @@ def dataframe_from_strava(auth, page=1):
 def speed_to_pace(speed):
     if speed == 0:
         return "inf"
-
-    # Convert speed to seconds per meter
     seconds_per_meter = 1 / speed
-
-    # Convert to seconds per kilometer
     seconds_per_kilometer = seconds_per_meter * 1000
-
-    # Break down into minutes and seconds
     minutes = int(seconds_per_kilometer // 60)
     seconds = int(seconds_per_kilometer % 60)
 
