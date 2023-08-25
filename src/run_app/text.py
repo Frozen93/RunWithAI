@@ -2,18 +2,19 @@ texts = {
     "gym_summary": """
 | Body Part       | Exercise                    | Short Description                               |
 |-----------------|-----------------------------|-------------------------------------------------|
-| **Lower Body**  | **Calf Walks**              | Walking on the balls of the feet.               |
-|                 | **Heel Walks**              | Walking on the heels.                           |
-|                 | **Walking Lunges**          | Stepping forward into a lunge position.         |
-|                 | **Lunge with Dumbbell Reach** | Performing a lunge while holding a dumbbell above the head and reaching down. |
-|                 | **Lunge with Hip Thrust**   | Going into a lunge and then thrusting the hip forward. |
-|                 | **Quarter Squats**          | Performing squats to a quarter depth.           |
-| **Hips & Core** | **Hip Shrugs**              | Standing on one leg and pulling the other leg up using the hip muscle. |
-|                 | **Theraband Exercises**     | Using a theraband for glute activation in various directions. |
-|                 | **Hip Lock and Knee Drive** | Holding a band above the head and driving one leg down towards the knee. |
-|                 | **Long Lever Glute Bridge** | Lying on the back and lifting one leg while keeping the other on the ground. |
-|                 | **Adductor Holds in Side Plank** | Holding a side plank position and working the adductors. |
-| **Flexibility** | **Foam Rolling and Yoga**   | Foam rolling various muscle groups followed by yoga stretches. |
+| **General**     | [**Gym program**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=1m38s) | 2-3x per week. |
+| **Lower Body**  | [**Calf Walks**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=1m41s) | Walking on the balls of the feet. 2-3 × 15m. |
+|                 | [**Active Toe Plants**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=1m53s) | Stay tall. |
+|                 | [**Heel Walks**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=2m57s) | Walking on the heels. 2-3 × 15m. |
+|                 | [**Lunge Circuit**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=3m39s) | 1× 5-6 each side. Drive knee up when coming up and lift med ball above head. |
+| **Hips & Core** | [**Hip Raises**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=3m12s) | 2-3 × 6-8 reps. |
+|                 | [**Theraband**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=5m28s) | 2-3 × 6-8 per position. Standing straight leg, left and right, diagonals, straight back. |
+|                 | [**Hip Lock and Knee Drive**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=6m30s) | 2-3 × 8. |
+|                 | [**Long Lever Glute Bridge**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=7m20s) | Lying on the back and lifting one leg. 2-3 × 5-8 sec. |
+|                 | [**Side Plank Abductor Hold**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=8m2s) | Holding a side plank position and working the adductors. 2-3 × 10-20 sec. |
+| **Flexibility** | [**Hinged Lunge**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=9m49s) | 2-3 × 8. |
+|                 | [**Lunge > Hip Drive**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=11m34s) | Going into a lunge and then thrusting the hip forward. 2-3 × 6. |
+|                 | [**1/4 Squat w Power Up**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=12m48s) | Performing squats to a quarter depth with power up. 2-3 × 6. |
 
 """
 }
