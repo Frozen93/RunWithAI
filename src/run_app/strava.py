@@ -99,7 +99,6 @@ def logged_in_title(strava_auth, header=None):
     col.markdown(f"*Welcome, {first_name} {last_name}!*")
 
 
-@st.cache_resource
 def exchange_authorization_code(authorization_code):
     response = httpx.post(
         url="https://www.strava.com/oauth/token",
@@ -123,7 +122,6 @@ def exchange_authorization_code(authorization_code):
     return strava_auth
 
 
-@st.cache_resource
 def authenticate(header=None, stop_if_unauthenticated=True):
     query_params = st.experimental_get_query_params()
     authorization_code = query_params.get("code", [None])[0]
