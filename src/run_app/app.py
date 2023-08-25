@@ -122,6 +122,14 @@ def display_comparison_metrics(df: pd.DataFrame, df_raw: pd.DataFrame):
 
     col0, col1, col2, col3 = st.columns([1, 1, 1, 1])
     with col0:
+        st.subheader("Fatigue Score")
+        st.markdown(
+            """
+*0-30% Fatigue*: This is a good range for most training weeks. Continue with the training plan but always listen to your body.
+*30-50% Fatigue*: Be cautious. Monitor your fatigue levels closely. If you consistently stay in this range, consider adding more recovery or reducing the intensity/volume.
+*50%+ Fatigue*: Strongly consider taking it easy. This range indicates a high risk of overtraining. Incorporate more rest days, focus on sleep and nutrition, and possibly consult with a coach or healthcare professional if sustained.
+    """
+        )
         plots.plot_fatigue_sport(df_raw)
     with col3:
         st.subheader("All Time Metrics")
