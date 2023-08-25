@@ -122,7 +122,7 @@ def display_comparison_metrics(df: pd.DataFrame):
 
     col1, col2, col3 = st.columns([1, 1, 1])
 
-    with col1:
+    with col3:
         st.subheader("All Time Metrics")
         for metric, value in metrics_all_time.items():
             st.metric(label=metric, value=value)
@@ -132,7 +132,7 @@ def display_comparison_metrics(df: pd.DataFrame):
         for metric, value in metrics_prev_30.items():
             st.metric(label=metric, value=value)
 
-    with col3:
+    with col1:
         st.subheader("Last 30 Days")
         for metric, value in metrics_last_30.items():
             if metric == "Average Pace":
