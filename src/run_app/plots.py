@@ -111,7 +111,14 @@ def plot_fatigue_sport(df):
     current_fatigue = weekly_data['Fatigue'].iloc[-1]
 
     fig = go.Figure(
-        data=[go.Pie(labels=['Fatigue', 'Remaining'], values=[current_fatigue, 100 - current_fatigue], hole=0.3)]
+        data=[
+            go.Pie(
+                labels=['Fatigue', 'Remaining'],
+                values=[current_fatigue, 100 - current_fatigue],
+                marker=dict(colors=['red', 'green']),
+                hole=0.5,
+            )
+        ]
     )
     st.plotly_chart(fig)
 
