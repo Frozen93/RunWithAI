@@ -326,14 +326,16 @@ def main():
     setup_config()
     apply_styles()
 
-    l, r, _ = st.columns((1, 1, 4))
+    l, m, r = st.columns((1, 1, 4))
     with l:
         st.markdown("# AI Runner")
-    with r:
+    with m:
         st_lottie(
             "https://lottie.host/a2b2ddf8-f030-46fa-b3b2-8c1727afb253/h2zfkvSzpy.json",
             height=120,
         )
+    with r:
+        plots.plot_fatigue_sport(df_raw)
     strava_header = strava.header()
     strava_auth = strava.authenticate(header=strava_header, stop_if_unauthenticated=False)
     if strava_auth:
@@ -354,7 +356,7 @@ def main():
                 print(f"Error on page {page_num}: {e}")
                 break
         df_raw = strava.load_strava_data(df_raw)
-        plots.plot_fatigue_sport(df_raw)
+
         activity_heatmap(df_raw)
         pace, threshold = st.columns(2)
         with pace:
