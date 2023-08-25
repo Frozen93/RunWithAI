@@ -12,7 +12,7 @@ texts = {
 |                 | [**Long Lever Glute Bridge**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=7m20s) | Lie on your back and extend one leg straight while keeping the other foot on the ground. | 2-3 × 5-8 sec |
 |                 | [**Side Plank Abductor Hold**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=8m2s) | Assume a side plank position and lift the top leg, working the outer thigh and core muscles. | 2-3 × 10-20 sec |
 | **Flexibility** | [**Hinged Lunge**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=9m49s) | Step forward into a lunge, then hinge forward at the hips. | 2-3 × 8 reps |
-|                 | [**Lunge > Hip Drive**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=11m34s) | From a lunge position, powerfully thrust your hip forward. | 2-3 × 6 reps |
+|                 | [**Lunge > Hip Drive**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=11m34s) | From a lunge position, push your hip forward. | 2-3 × 6 reps |
 |                 | [**1/4 Squat w Power Up**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=12m48s) | Perform a shallow squat, then explosively rise. | 2-3 × 6 reps |
 """
 }
