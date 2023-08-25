@@ -196,7 +196,7 @@ def activity_heatmap(df):
         'November',
         'December',
     ]
-    months_string = '                             '.join(months)
+    months_string = '                      '.join(months)
     for ann in fig.layout.annotations:
         if ann.text != "0":
             try:
@@ -231,7 +231,7 @@ def activity_heatmap(df):
         ticktext=["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     )
     for ann in fig.layout.annotations:
-        ann.font.size = 14
+        ann.font.size = 13
     st.plotly_chart(fig, use_container_width=False)
 
 
