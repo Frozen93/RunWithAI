@@ -113,7 +113,7 @@ def plot_fatigue_sport(df):
     fig = go.Figure(
         data=[go.Pie(labels=['Fatigue', 'Remaining'], values=[current_fatigue, 100 - current_fatigue], hole=0.3)]
     )
-    fig.show()
+    st.plotly_chart(fig)
 
 
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
