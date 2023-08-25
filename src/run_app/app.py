@@ -123,6 +123,7 @@ def display_comparison_metrics(df: pd.DataFrame, df_raw: pd.DataFrame):
     col0, col1, col2, col3 = st.columns([1, 1, 1, 1])
     with col0:
         st.subheader("Fatigue Score")
+        plots.plot_fatigue_sport(df_raw)
         st.markdown(
             """
 **0-30% Fatigue:** Within a safe training range; proceed as planned but.  
@@ -132,7 +133,6 @@ def display_comparison_metrics(df: pd.DataFrame, df_raw: pd.DataFrame):
 **50%+ Fatigue:** High overtraining risk. Prioritize rest, sleep, and nutrition.
  """
         )
-        plots.plot_fatigue_sport(df_raw)
     with col3:
         st.subheader("All Time Metrics")
         for metric, value in metrics_all_time.items():
