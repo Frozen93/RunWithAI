@@ -112,7 +112,7 @@ def exchange_authorization_code(authorization_code):
     try:
         response.raise_for_status()
     except httpx.HTTPStatusError:
-        st.error("Something went wrong while authenticating with Strava. Please reload and try again")
+        st.error(response)
         st.experimental_set_query_params()
         st.stop()
         return
