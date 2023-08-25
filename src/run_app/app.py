@@ -231,7 +231,7 @@ def activity_heatmap(df):
         ticktext=["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     )
     for ann in fig.layout.annotations:
-        ann.font.size = 13
+        ann.font.size = 12
     st.plotly_chart(fig, use_container_width=False)
 
 
