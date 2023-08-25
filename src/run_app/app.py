@@ -169,7 +169,7 @@ def activity_heatmap(df):
         [1.0, "rgba(70, 236, 70, 1)"],
     ]
     hover = [
-        [f"Day: {date}<br>Distance: {dist} km" if date else "" for date, dist in zip(date_row, dist_row)]
+        [f"Day: {date}<br>Distance: {dist.round(2)} km" if date else "" for date, dist in zip(date_row, dist_row)]
         for date_row, dist_row in zip(full_dates, distances)
     ]
 
