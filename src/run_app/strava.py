@@ -99,6 +99,7 @@ def logged_in_title(strava_auth, header=None):
     col.markdown(f"*Welcome, {first_name} {last_name}!*")
 
 
+@st.cache_data
 def exchange_authorization_code(authorization_code):
     response = httpx.post(
         url="https://www.strava.com/oauth/token",
@@ -112,7 +113,7 @@ def exchange_authorization_code(authorization_code):
     try:
         response.raise_for_status()
     except httpx.HTTPStatusError:
-        st.error(response)
+        st.error("Something went wrong while authenticating with Strava. Please reload and try again")
         st.experimental_set_query_params()
         st.stop()
         return
@@ -149,6 +150,7 @@ def header():
     return strava_button
 
 
+@st.cache_data
 def get_activities(auth, page=1):
     access_token = auth["access_token"]
     response = httpx.get(
@@ -291,6 +293,7 @@ def speed_to_pace(speed):
     return float(f"{minutes}.{seconds:02}")
 
 
+@st.cache_data
 def load_strava_data(data: pd.DataFrame) -> pd.DataFrame:
     """Loads and preprocesses running data."""
     data = data.copy()
@@ -298,7 +301,7 @@ def load_strava_data(data: pd.DataFrame) -> pd.DataFrame:
     data["date"] = pd.to_datetime(data["date"], errors='coerce')
     data = data.dropna(subset=['date'])
     data["month-year"] = data["date"].dt.strftime("%Y-%m")
-    data["distance_km"] = data["distance_meters"].apply(lambda x: x / 1000)
+    data["distance_km"] = data["distance"].apply(lambda x: x / 1000)
     data.loc[:, "pace"] = data["average_speed_metres_per_second"].apply(speed_to_pace)
     data = data[data["date"] >= "2023-01-01"]
     return data.sort_values(by="date")
