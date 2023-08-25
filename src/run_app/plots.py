@@ -115,7 +115,7 @@ def plot_fatigue_sport(df):
             go.Pie(
                 labels=['Fatigue', 'Remaining'],
                 values=[current_fatigue, 100 - current_fatigue],
-                marker=dict(colors=['rgba(231, 29, 54, 0.5)', 'rgba(3, 201, 136, 0.5)']),
+                marker=dict(colors=['rgba(231, 29, 54, 0.7)', 'rgba(6, 255, 0, 0.7)']),
                 hole=0.5,
             )
         ]
