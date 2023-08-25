@@ -379,7 +379,8 @@ def main():
             "suffer_score",
         ]
 
-        plots.plot_scatter_metrics_with_regression(df, metrics_list)
+        with st.expander("Correlation Plot"):
+            plots.plot_scatter_metrics_with_regression(df, metrics_list)
 
         a, _, b = st.columns((6, 1, 6))
         with a:
