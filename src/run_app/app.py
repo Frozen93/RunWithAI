@@ -87,7 +87,7 @@ def distance_threshold(df):
     return df
 
 
-def display_comparison_metrics(df: pd.DataFrame):
+def display_comparison_metrics(df: pd.DataFrame, df_raw: pd.DataFrame):
     """
     Displays a comparison of metrics for the last 30 days against the previous 30 days.
     Additionally, shows the overall metrics for the entire dataset.
@@ -120,8 +120,9 @@ def display_comparison_metrics(df: pd.DataFrame):
         "Average Pace": avg_pace_all,
     }
 
-    col1, col2, col3 = st.columns([1, 1, 1])
-
+    col0, col1, col2, col3 = st.columns([1, 1, 1, 1])
+    with col0:
+        plots.plot_fatigue_sport(df_raw)
     with col3:
         st.subheader("All Time Metrics")
         for metric, value in metrics_all_time.items():
@@ -326,7 +327,7 @@ def main():
     setup_config()
     apply_styles()
 
-    l, m, r = st.columns((1, 1, 4))
+    l, m, _ = st.columns((1, 1, 4))
     with l:
         st.markdown("# AI Runner")
     with m:
@@ -355,15 +356,14 @@ def main():
                 print(f"Error on page {page_num}: {e}")
                 break
         df_raw = strava.load_strava_data(df_raw)
-        with r:
-            plots.plot_fatigue_sport(df_raw)
+
         activity_heatmap(df_raw)
         pace, threshold = st.columns(2)
         with pace:
             df = pace_threshold(df_raw)
         with threshold:
             df = distance_threshold(df_raw)
-        display_comparison_metrics(df)
+        display_comparison_metrics(df, df_raw)
 
         with st.expander("Show raw data"):
             st.dataframe(
