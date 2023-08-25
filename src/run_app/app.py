@@ -392,8 +392,11 @@ def main():
 
         with a:
             st.markdown("### Ressources")
-            components.iframe("https://whimsical.com/embed/NQDmHq5DPxYuZD4mqnX89Z")
-            st.video("https://www.youtube.com/watch?v=OZReo8VwLSQ", start_time=42)
+
+            st.video("https://www.youtube.com/watch?v=SnNlrFcXjVU")
+        with b:
+            st.markdown("### Summary")
+            components.iframe("https://whimsical.com/embed/BMrUNFQaWYgd9e1b1vZEDi")
 
         st.subheader("Ask the AI any question related to your running data")
         st.markdown("*Example: Show me my longest run!*")
