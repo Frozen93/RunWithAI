@@ -9,10 +9,10 @@ from pydantic import ValidationError
 from langchain.agents.openai_functions_agent.base import OutputParserException
 import requests
 import json
-import streamlit.components.v1 as components
 import textwrap
 import plots
 import strava
+import os
 
 
 def setup_config():
@@ -396,9 +396,9 @@ def main():
             st.video("https://www.youtube.com/watch?v=SnNlrFcXjVU")
         with b:
             st.markdown("### Summary")
-            components.html(
-                '<iframe style="border:none" width="800" height="450" src="https://whimsical.com/embed/BMrUNFQaWYgd9e1b1vZEDi@2Ux7TurymNW3nwq8gy1R"></iframe>'
-            )
+            current_directory = os.path.dirname(os.path.abspath(__file__))
+            image_path = os.path.join(current_directory, 'images', 'gym.png')
+            st.image(image_path)
 
         st.subheader("Ask the AI any question related to your running data")
         st.markdown("*Example: Show me my longest run!*")
