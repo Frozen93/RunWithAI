@@ -117,6 +117,7 @@ def plot_fatigue_sport(df):
                 values=[current_fatigue, 100 - current_fatigue],
                 marker=dict(colors=['rgba(255, 23, 0, 0.85)', 'rgba(65, 225, 65, 0.85)']),
                 textfont=dict(color='white', size=15, family="Courier New, bold"),
+                margin=dict(t=20, b=50, l=50, r=50)
                 showlegend=False,
                 hole=0.5,
             )
