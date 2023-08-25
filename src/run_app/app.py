@@ -396,7 +396,9 @@ def main():
             st.video("https://www.youtube.com/watch?v=SnNlrFcXjVU")
         with b:
             st.markdown("### Summary")
-            components.iframe("https://whimsical.com/embed/BMrUNFQaWYgd9e1b1vZEDi")
+            components.html(
+                '<iframe style="border:none" width="800" height="450" src="https://whimsical.com/embed/BMrUNFQaWYgd9e1b1vZEDi@2Ux7TurymNW3nwq8gy1R"></iframe>'
+            )
 
         st.subheader("Ask the AI any question related to your running data")
         st.markdown("*Example: Show me my longest run!*")
