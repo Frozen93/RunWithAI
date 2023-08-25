@@ -125,7 +125,8 @@ def display_comparison_metrics(df: pd.DataFrame, df_raw: pd.DataFrame):
         st.subheader("Fatigue Score")
         st.markdown(
             """
-**0-30% Fatigue:** Within a safe training range; proceed as planned but.
+**0-30% Fatigue:** Within a safe training range; proceed as planned but.  
+
 **30-50% Fatigue:** Be careful. If this persists, re-evaluate your routine for more balance.
 
 **50%+ Fatigue:** High overtraining risk. Prioritize rest, sleep, and nutrition.
