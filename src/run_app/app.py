@@ -394,14 +394,10 @@ def main():
 
         with res_a:
             st.markdown("### Ressources")
-            gym = st.checkbox("Show Gym Exercises")
-            if gym:
-                st.video("https://www.youtube.com/watch?v=SnNlrFcXjVU")
+            st.video("https://www.youtube.com/watch?v=SnNlrFcXjVU")
         with res_b:
             st.markdown("### Summary")
-            theory = st.checkbox("Show Treshold Theory")
-            if gym:
-                st.markdown(text.texts["gym_summary"])
+            st.markdown(text.texts["gym_summary"])
 
         st.subheader("Ask the AI any question related to your running data")
         st.markdown("*Example: Show me my longest run!*")
