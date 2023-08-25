@@ -9,7 +9,7 @@ from pydantic import ValidationError
 from langchain.agents.openai_functions_agent.base import OutputParserException
 import requests
 import json
-import time
+import streamlit.components.v1 as components
 import textwrap
 import plots
 import strava
@@ -392,6 +392,7 @@ def main():
 
         with a:
             st.markdown("### Ressources")
+            components.iframe("<iframe style="border:none" width="800" height="450" src="https://whimsical.com/embed/NQDmHq5DPxYuZD4mqnX89Z"></iframe>")
             st.video("https://www.youtube.com/watch?v=OZReo8VwLSQ", start_time=42)
 
         st.subheader("Ask the AI any question related to your running data")
