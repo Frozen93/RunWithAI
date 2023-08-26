@@ -80,7 +80,7 @@ def adjust_heart_rate_for_cardiac_drift(row):
 
 @st.cache_data
 def plot_heart_rate_efficiency(df: pd.DataFrame):
-    ELEVATION_ADJUSTMENT_FACTOR = 10
+    ELEVATION_ADJUSTMENT_FACTOR = 11
     df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
     df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
     df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
