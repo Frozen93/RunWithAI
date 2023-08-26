@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from streamlit_lottie import st_lottie
+from streamlit.components.v1 import html
 import plotly.figure_factory as ff
 from langchain.agents import create_pandas_dataframe_agent
 from langchain.chat_models import ChatOpenAI
@@ -345,7 +346,10 @@ def main():
             "https://lottie.host/a2b2ddf8-f030-46fa-b3b2-8c1727afb253/h2zfkvSzpy.json",
             height=120,
         )
-
+    bmac = """
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="mariuss" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+    """
+    html(bmac)
     strava_header = strava.header()
     strava_auth = strava.authenticate(header=strava_header, stop_if_unauthenticated=False)
     if strava_auth:
