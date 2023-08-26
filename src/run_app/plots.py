@@ -70,7 +70,7 @@ def plot_distance_histogram(df):
 
 def plot_fatigue_sport(df):
     # Impute missing average_heartrate with the median of available data
-    median_heartrate = df['average_heartrate'].replace('None', np.nan).dropna().median()
+    median_heartrate = df['average_heartrate'].replace('None', 145)
     df['average_heartrate'].replace({"None": np.nan}, inplace=True)
     df['average_heartrate'].fillna(median_heartrate, inplace=True)
 
