@@ -97,7 +97,7 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
     fig = go.Figure(
         data=[
             go.Scatter(
-                y=df['heart_rate_efficiency'],
+                y=df['heart_rate_efficiency'] * 10000,
                 x=df['date'],  # Replace 'date' with the name of your date column
                 mode='lines+markers',
                 line=dict(color='rgba(60, 75, 255, 0.6)', width=2.5),
