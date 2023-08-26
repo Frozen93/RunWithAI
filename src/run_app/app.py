@@ -13,7 +13,6 @@ import textwrap
 import plots
 import strava
 import text
-from st_paywall import add_auth
 
 
 def setup_config():
@@ -337,7 +336,6 @@ def main():
     l, m, _ = st.columns((1, 1, 4))
     with l:
         st.markdown("# AI Runner")
-        add_auth(required=True)
     with m:
         st_lottie(
             "https://lottie.host/a2b2ddf8-f030-46fa-b3b2-8c1727afb253/h2zfkvSzpy.json",
