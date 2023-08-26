@@ -96,6 +96,26 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
         "<b>Elevation Gain:</b> %{customdata[4]:.2f} m<br>"
         "<extra></extra>"  # This removes the additional info box in hover
     )
+
+
+@st.cache_data
+def plot_heart_rate_efficiency(df: pd.DataFrame):
+    ELEVATION_ADJUSTMENT_FACTOR = 11
+    df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
+    df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
+    df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
+    df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
+    df['heart_rate_efficiency'] = df['adjusted_speed'] / df['adjusted_heartrate']
+    customdata = df[["distance_km", "pace", "adjusted_distance", "average_heartrate", "total_elevation_gain"]].values
+    hovertemplate = (
+        "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
+        "<b>Distance:</b> %{customdata[0]:.2f} km<br>"
+        "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
+        "<b>Adjusted Distance:</b> %{customdata[2]:.2f} km<br>"
+        "<b>Average Heartrate:</b> %{customdata[3]:.2f}<br>"
+        "<b>Elevation Gain:</b> %{customdata[4]:.2f} m<br>"
+        "<extra></extra>"  # This removes the additional info box in hover
+    )
     # Plotting
     fig = go.Figure(
         data=[
