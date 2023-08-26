@@ -402,7 +402,7 @@ def main():
         with a:
             plots.plot_cumulative_kms_per_month(df)
             plots.plot_monthly_avg_pace(df)
-            st.write(df)
+            st.write(df.pace.dtype)
 
         with b:
             plots.plot_pace_distribution(df)
