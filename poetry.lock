@@ -868,6 +868,20 @@ http2 = ["h2 (>=3,<5)"]
 socks = ["socksio (==1.*)"]
 
 [[package]]
+name = "httpx-oauth"
+version = "0.13.0"
+description = "Async OAuth client using HTTPX"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "httpx_oauth-0.13.0-py3-none-any.whl", hash = "sha256:245f04bc8340da4184d26ec0d589e35e7e8f5af6157f30b6e012c0896f80f875"},
+    {file = "httpx_oauth-0.13.0.tar.gz", hash = "sha256:ed7359053ac1b1652adbb18b074b6709bcee54e28fb76dd8062c408cfc4589c3"},
+]
+
+[package.dependencies]
+httpx = ">=0.18,<0.25"
+
+[[package]]
 name = "identify"
 version = "2.5.27"
 description = "File identification library for Python"
@@ -1958,6 +1972,23 @@ files = [
 plugins = ["importlib-metadata"]
 
 [[package]]
+name = "pyjwt"
+version = "2.8.0"
+description = "JSON Web Token implementation in Python"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "PyJWT-2.8.0-py3-none-any.whl", hash = "sha256:59127c392cc44c2da5bb3192169a91f429924e17aff6534d70fdc02ab3e04320"},
+    {file = "PyJWT-2.8.0.tar.gz", hash = "sha256:57e28d156e3d5c10088e0c68abb90bfac3df82b40a71bd0daa20c65ccd5c23de"},
+]
+
+[package.extras]
+crypto = ["cryptography (>=3.4.0)"]
+dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
+
+[[package]]
 name = "pympler"
 version = "1.0.1"
 description = "A development tool to measure, monitor and analyze the memory behavior of Python objects."
@@ -2488,6 +2519,22 @@ pymysql = ["pymysql"]
 sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
+name = "st-paywall"
+version = "0.1.5"
+description = "A Python package for creating subscription Streamlit apps"
+optional = false
+python-versions = ">=3.8.0"
+files = [
+    {file = "st-paywall-0.1.5.tar.gz", hash = "sha256:25e93b342e538654ae7a7756b6c4fa5e2efc39c7bd14f64a86836cfed536da7a"},
+    {file = "st_paywall-0.1.5-py3-none-any.whl", hash = "sha256:c7e4ded32e71bf988da48aab20eaaf5c3529cd69eb2ee0f9854c9eddf7e36633"},
+]
+
+[package.dependencies]
+httpx-oauth = "*"
+pyjwt = "*"
+stripe = "*"
+
+[[package]]
 name = "stravalib"
 version = "0.10.2"
 description = "Python library for interacting with Strava v3 REST API"
@@ -2557,6 +2604,21 @@ files = [
 
 [package.dependencies]
 streamlit = ">=0.63"
+
+[[package]]
+name = "stripe"
+version = "6.1.0"
+description = "Python bindings for the Stripe API"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "stripe-6.1.0-py2.py3-none-any.whl", hash = "sha256:9ad69f1ec57b91d81c39c2c02e3c9445dfc84c06bcbe11d7c1077b40dbbcb67b"},
+    {file = "stripe-6.1.0.tar.gz", hash = "sha256:5a99b50510d74f4ce33bb68961cc073c31df7eb3def90594e8ffe25a5c4dcaea"},
+]
+
+[package.dependencies]
+requests = {version = ">=2.20", markers = "python_version >= \"3.0\""}
+typing-extensions = {version = ">3.7.2", markers = "python_version >= \"3.7\""}
 
 [[package]]
 name = "tabulate"
@@ -2938,4 +3000,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<3.9.7 || >3.9.7,<4.0"
-content-hash = "b47add21846cab9ac1b1cd43d7ce266afc09581a8725e1fe766fcbac9df6fb78"
+content-hash = "bbff7f1dcbafc8616b8e5b4526e4e8ef5ac32743ac4b6b0f0b6c9f5e8d432573"
