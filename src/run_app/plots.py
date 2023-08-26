@@ -68,26 +68,52 @@ def plot_distance_histogram(df):
     st.plotly_chart(fig, use_container_width=True)
 
 
+def adjust_heart_rate_for_cardiac_drift(row):
+    if row['moving_time_seconds'] < 1800:  # less than 30 minutes
+        return row['average_heartrate']
+    elif row['moving_time_seconds'] < 3600:  # between 30 and 60 minutes
+        return row['average_heartrate'] * 0.98  # 2% adjustment
+    else:  # longer than 60 minutes
+        return row['average_heartrate'] * 0.95  # 5% adjustment
+
+
 @st.cache_data
 def plot_heart_rate_efficiency(df: pd.DataFrame):
-    # Compute the heart rate efficiency
-    df['heart_rate_efficiency'] = df['average_speed_metres_per_second'] / df['average_heartrate']
+    ELEVATION_ADJUSTMENT_FACTOR = 10
 
-    # Create the line plot
+    df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
+
+    # Adjusted distance
+    df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
+
+    # Adjusted speed
+    df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds']
+
+    df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
+
+    # Then calculate the efficiency with adjusted speed and heart rate
+    df['heart_rate_efficiency'] = df['adjusted_speed'] / df['adjusted_heartrate']
+
+    # Plotting
     fig = go.Figure(
         data=[
             go.Scatter(
                 y=df['heart_rate_efficiency'],
-                x=df['date'],  # assuming you have a 'date' column to use as the x-axis
-                name='Heart Rate Efficiency',
+                x=df['date'],  # Replace 'date' with the name of your date column
                 mode='lines+markers',
-                marker_color="rgba(60, 75, 255, 0.6)",
-                line=dict(color="rgba(137, 146, 255, 0.8)", width=1),
+                line=dict(color='rgba(60, 75, 255, 0.6)', width=2.5),
+                marker=dict(color="rgba(137, 146, 255, 0.8)", size=8),
             )
         ]
     )
 
-    fig.update_layout(title="Heart Rate Efficiency Over Time", yaxis_title="Efficiency (m/s per bpm)")
+    fig.update_layout(
+        title="Heart Rate Efficiency Over Time",
+        yaxis_title="Heart Rate Efficiency",
+        xaxis_title="Date",
+        plot_bgcolor="rgba(0,0,0,0)",
+    )
+
     st.plotly_chart(fig, use_container_width=True)
 
 
