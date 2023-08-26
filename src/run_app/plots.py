@@ -86,12 +86,13 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
     df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
     df['heart_rate_efficiency'] = df['adjusted_speed'] / df['adjusted_heartrate']
     st.write(df['adjusted_speed'], df['adjusted_heartrate'])
-    customdata = df[["distance_km", "pace", "adjusted_distance"]].values
+    customdata = df[["distance_km", "pace", "adjusted_distance", "average_heartrate"]].values
     hovertemplate = (
         "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
-        "<b>Distance (km):</b> %{customdata[0]:.2f}<br>"
+        "<b>Distance:</b> %{customdata[0]:.2f} km<br>"
         "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
         "<b>Adjusted Distance:</b> %{customdata[2]:.2f} km<br>"
+        "<b>Average Heartrate:</b> %{customdata[3]:.2f}<br>"
         "<extra></extra>"  # This removes the additional info box in hover
     )
     # Plotting
