@@ -69,19 +69,19 @@ def plot_distance_histogram(df):
 
 
 def plot_fatigue_sport(df):
-    # Assuming df is your existing dataframe
+    df['average_heartrate'].replace({"None": 0, np.nan: 0}, inplace=True)
     df['HRPR'] = df['average_heartrate'] / df['average_speed_metres_per_second']
 
     # Weekly data calculations
     df['date'] = df['date'].dt.tz_localize(None)
-    df['week'] = df['date'].dt.to_period('W-MON')  # replace 'date_column' with the name of your date column
+    df['week'] = df['date'].dt.to_period('W-MON')
     weekly_data = (
         df.groupby('week')
         .agg(
             {
                 'distance_km': 'sum',
                 'max_heartrate': 'mean',
-                'HRPR': 'mean',  # This line was missing in the previous code.
+                'HRPR': 'mean',
             }
         )
         .reset_index()
