@@ -101,12 +101,9 @@ def plot_fatigue_sport(df):
     weekly_data['Normalized Intensity'] = (weekly_data['Weekly Intensity'] - weekly_data['Weekly Intensity'].min()) / (
         weekly_data['Weekly Intensity'].max() - weekly_data['Weekly Intensity'].min()
     )
-
     # Decay fatigue for days without training
-    DECAY_FACTOR = 0.9  # 10% decay for each day without training
-
+    DECAY_FACTOR = 0.9
     weekly_data['Fatigue Adjustment'] = 1 - (weekly_data['Days Since Last'] * (1 - DECAY_FACTOR))
-
     weekly_data['Fatigue'] = (
         100
         * weekly_data['Fatigue Adjustment']

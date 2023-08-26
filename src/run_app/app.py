@@ -18,11 +18,7 @@ from st_paywall import add_auth
 
 def setup_config():
     """Configures Streamlit app settings."""
-    st.set_page_config(
-        page_title="Run with AI",
-        page_icon="💧",
-        layout="wide",
-    )
+    st.set_page_config(page_title="Run with AI", page_icon="💧", layout="wide", initial_sidebar_state="collapsed")
     st.markdown(
         """ <style>
     footer {visibility: hidden;}
