@@ -130,6 +130,7 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
         yaxis_title="Heart Rate Efficiency",
         xaxis_title="Date",
         plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
     )
 
     st.plotly_chart(fig, use_container_width=True)
