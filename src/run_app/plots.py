@@ -85,7 +85,14 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
     df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds']
     df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
     df['heart_rate_efficiency'] = df['adjusted_speed'] / df['adjusted_heartrate']
-
+    customdata = df[["distance_km", "pace", "adjusted_distance"]].values
+    hovertemplate = (
+        "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
+        "<b>Distance (km):</b> %{customdata[0]:.2f}<br>"
+        "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
+        "<b>Adjusted Distance:</b> %{customdata[2]:.2f} km<br>"
+        "<extra></extra>"  # This removes the additional info box in hover
+    )
     # Plotting
     fig = go.Figure(
         data=[
@@ -95,6 +102,8 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
                 mode='lines+markers',
                 line=dict(color='rgba(60, 75, 255, 0.6)', width=2.5),
                 marker=dict(color="rgba(137, 146, 255, 0.8)", size=8),
+                customdata=customdata,
+                hovertemplate=hovertemplate,
             )
         ]
     )
