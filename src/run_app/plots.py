@@ -69,25 +69,27 @@ def plot_distance_histogram(df):
 
 
 def plot_fatigue_sport(df):
-    df['average_heartrate'].replace({"None": 0, np.nan: 0}, inplace=True)
+    # Impute missing average_heartrate with the median of available data
+    median_heartrate = df['average_heartrate'].replace('None', np.nan).dropna().median()
+    df['average_heartrate'].replace({"None": np.nan}, inplace=True)
+    df['average_heartrate'].fillna(median_heartrate, inplace=True)
+
     df['HRPR'] = df['average_heartrate'] / df['average_speed_metres_per_second']
 
     # Weekly data calculations
     df['date'] = df['date'].dt.tz_localize(None)
     df['week'] = df['date'].dt.to_period('W-MON')
+
+    # Calculate days since last workout
+    df['days_since_last_workout'] = df['date'].diff().dt.days
+
     weekly_data = (
         df.groupby('week')
-        .agg(
-            {
-                'distance_km': 'sum',
-                'max_heartrate': 'mean',
-                'HRPR': 'mean',
-            }
-        )
+        .agg({'distance_km': 'sum', 'max_heartrate': 'mean', 'HRPR': 'mean', 'days_since_last_workout': 'mean'})
         .reset_index()
     )
 
-    weekly_data.columns = ['week', 'Weekly Volume', 'Weekly Intensity', 'HRPR']
+    weekly_data.columns = ['week', 'Weekly Volume', 'Weekly Intensity', 'HRPR', 'Days Since Last']
 
     # Normalize each metric
     weekly_data['Normalized HRPR'] = (weekly_data['HRPR'] - weekly_data['HRPR'].min()) / (
@@ -100,11 +102,18 @@ def plot_fatigue_sport(df):
         weekly_data['Weekly Intensity'].max() - weekly_data['Weekly Intensity'].min()
     )
 
+    # Decay fatigue for days without training
+    DECAY_FACTOR = 0.9  # 10% decay for each day without training
+
+    weekly_data['Fatigue Adjustment'] = 1 - (weekly_data['Days Since Last'] * (1 - DECAY_FACTOR))
+
     weekly_data['Fatigue'] = (
         100
+        * weekly_data['Fatigue Adjustment']
         * (weekly_data['Normalized HRPR'] + weekly_data['Normalized Volume'] + weekly_data['Normalized Intensity'])
         / 3
     )
+
     current_fatigue = weekly_data['Fatigue'].iloc[-1]
     fig = go.Figure(
         data=[
