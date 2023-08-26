@@ -105,7 +105,8 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
         "<extra></extra>"  # This removes the additional info box in hover
     )
     # Regression Line Calculation
-    mask = ~np.isnan(df['heart_rate_efficiency'])  # Ensure NaN values are not used in regression
+    df['heart_rate_efficiency'] = pd.to_numeric(df['heart_rate_efficiency'], errors='coerce')
+    mask = pd.notna(df['heart_rate_efficiency'])  # Mask for non-NaN values
     slope, intercept = np.polyfit(df[mask]['date'].astype(np.int64), df[mask]['heart_rate_efficiency'], 1)
     df['regression_line'] = slope * df['date'].astype(np.int64) + intercept
 
