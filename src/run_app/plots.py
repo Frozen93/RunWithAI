@@ -85,6 +85,7 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
     df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds']
     df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
     df['heart_rate_efficiency'] = df['adjusted_speed'] / df['adjusted_heartrate']
+    st.write(df['adjusted_speed'], df['adjusted_heartrate'])
     customdata = df[["distance_km", "pace", "adjusted_distance"]].values
     hovertemplate = (
         "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
