@@ -68,19 +68,27 @@ def plot_distance_histogram(df):
     st.plotly_chart(fig, use_container_width=True)
 
 
-def plot_heart_rate_efficiency(df):
+@st.cache_data
+def plot_heart_rate_efficiency(df: pd.DataFrame):
     # Compute the heart rate efficiency
     df['heart_rate_efficiency'] = df['average_speed_metres_per_second'] / df['average_heartrate']
 
-    # Create the box plot
-    fig = go.Figure()
-
-    fig.add_trace(
-        go.Box(y=df['heart_rate_efficiency'], name='Heart Rate Efficiency', marker_color='blue', boxmean=True)
-    )  # Displays the mean
+    # Create the line plot
+    fig = go.Figure(
+        data=[
+            go.Scatter(
+                y=df['heart_rate_efficiency'],
+                x=df['date'],  # assuming you have a 'date' column to use as the x-axis
+                name='Heart Rate Efficiency',
+                mode='lines+markers',
+                marker_color="rgba(60, 75, 255, 0.6)",
+                line=dict(color="rgba(137, 146, 255, 0.8)", width=1),
+            )
+        ]
+    )
 
     fig.update_layout(
-        title="Distribution of Heart Rate Efficiency", yaxis_title="Efficiency (m/s per bpm)", plot_bgcolor="white"
+        title="Heart Rate Efficiency Over Time", yaxis_title="Efficiency (m/s per bpm)", plot_bgcolor="white"
     )
     st.plotly_chart(fig, use_container_width=True)
 
