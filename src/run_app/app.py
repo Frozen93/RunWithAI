@@ -377,7 +377,7 @@ def main():
         with pace:
             df = pace_threshold(df_raw)
         with threshold:
-            df = distance_threshold(df_raw)
+            df = distance_threshold(df)
         display_comparison_metrics(df, df_raw)
 
         with st.expander("Show raw data"):
