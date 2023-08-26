@@ -84,12 +84,15 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
     df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
     df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
     df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
-    df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
-    df['heart_rate_efficiency'] = df['adjusted_speed'] / df['adjusted_heartrate']
 
     # Decay for short runs
-    df['decay'] = df['distance_km'].apply(lambda d: max(0, 0.1 - d / 60))
-    df['heart_rate_efficiency'] = df['heart_rate_efficiency'] * (1 + df['decay'])
+    df['decay'] = df['distance_km'].apply(lambda d: 0.1 * (1 - d / 6) if d <= 6 else 0)
+    df['adjusted_heartrate_with_decay'] = df['average_heartrate'] / (1 + df['decay'])
+
+    df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
+    df['final_adjusted_heartrate'] = df[['adjusted_heartrate_with_decay', 'adjusted_heartrate']].mean(axis=1)
+
+    df['heart_rate_efficiency'] = df['adjusted_speed'] / df['final_adjusted_heartrate']
 
     customdata = df[["distance_km", "pace", "adjusted_distance", "average_heartrate", "total_elevation_gain"]].values
     hovertemplate = (
