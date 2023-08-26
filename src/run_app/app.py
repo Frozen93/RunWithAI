@@ -404,7 +404,7 @@ def main():
             plots.plot_heart_rate_efficiency(df)
         with b:
             plots.plot_cumulative_kms_per_month(df)
-            # plots.plot_pace_distribution(df)
+            plots.plot_pace_distribution(df)
             plots.plot_distance_histogram(df)
 
         res_a, _, res_b = st.columns((6, 1, 6))
