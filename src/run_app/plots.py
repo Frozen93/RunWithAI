@@ -68,6 +68,23 @@ def plot_distance_histogram(df):
     st.plotly_chart(fig, use_container_width=True)
 
 
+def plot_heart_rate_efficiency(df):
+    # Compute the heart rate efficiency
+    df['heart_rate_efficiency'] = df['average_speed_metres_per_second'] / df['average_heartrate']
+
+    # Create the box plot
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Box(y=df['heart_rate_efficiency'], name='Heart Rate Efficiency', marker_color='blue', boxmean=True)
+    )  # Displays the mean
+
+    fig.update_layout(
+        title="Distribution of Heart Rate Efficiency", yaxis_title="Efficiency (m/s per bpm)", plot_bgcolor="white"
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+
 def plot_fatigue_sport(df):
     # Impute missing average_heartrate with the median of available data
     median_heartrate = df['average_heartrate'].replace('None', np.nan).dropna().median()

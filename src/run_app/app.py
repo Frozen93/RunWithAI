@@ -404,7 +404,8 @@ def main():
             plots.plot_monthly_avg_pace(df)
 
         with b:
-            plots.plot_pace_distribution(df)
+            # plots.plot_pace_distribution(df)
+            plots.plot_heart_rate_efficiency(df)
             plots.plot_distance_histogram(df)
 
         res_a, _, res_b = st.columns((6, 1, 6))
