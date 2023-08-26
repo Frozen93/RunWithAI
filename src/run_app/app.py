@@ -338,7 +338,7 @@ def main():
     setup_config()
     apply_styles()
 
-    l, m, _ = st.columns((1, 1, 4))
+    l, m, _, r = st.columns((1, 1, 4, 1))
     with l:
         st.markdown("# AI Runner")
     with m:
@@ -349,7 +349,8 @@ def main():
     bmac = """
 <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="mariuss" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
     """
-    html(bmac)
+    with r:
+        html(bmac)
     strava_header = strava.header()
     strava_auth = strava.authenticate(header=strava_header, stop_if_unauthenticated=False)
     if strava_auth:
