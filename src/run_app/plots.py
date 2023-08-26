@@ -96,38 +96,32 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
         "<b>Elevation Gain:</b> %{customdata[4]:.2f} m<br>"
         "<extra></extra>"  # This removes the additional info box in hover
     )
+    # Regression Line Calculation
+    mask = ~np.isnan(df['heart_rate_efficiency'])  # Ensure NaN values are not used in regression
+    slope, intercept = np.polyfit(df[mask]['date'].astype(np.int64), df[mask]['heart_rate_efficiency'], 1)
+    df['regression_line'] = slope * df['date'].astype(np.int64) + intercept
 
-
-@st.cache_data
-def plot_heart_rate_efficiency(df: pd.DataFrame):
-    ELEVATION_ADJUSTMENT_FACTOR = 11
-    df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
-    df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
-    df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
-    df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
-    df['heart_rate_efficiency'] = df['adjusted_speed'] / df['adjusted_heartrate']
-    customdata = df[["distance_km", "pace", "adjusted_distance", "average_heartrate", "total_elevation_gain"]].values
-    hovertemplate = (
-        "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
-        "<b>Distance:</b> %{customdata[0]:.2f} km<br>"
-        "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
-        "<b>Adjusted Distance:</b> %{customdata[2]:.2f} km<br>"
-        "<b>Average Heartrate:</b> %{customdata[3]:.2f}<br>"
-        "<b>Elevation Gain:</b> %{customdata[4]:.2f} m<br>"
-        "<extra></extra>"  # This removes the additional info box in hover
-    )
     # Plotting
     fig = go.Figure(
         data=[
             go.Scatter(
                 y=df['heart_rate_efficiency'] * 10,
-                x=df['date'],  # Replace 'date' with the name of your date column
+                x=df['date'],
                 mode='lines+markers',
                 line=dict(color='rgba(60, 75, 255, 0.6)', width=2.5),
                 marker=dict(color="rgba(137, 146, 255, 0.8)", size=8),
                 customdata=customdata,
                 hovertemplate=hovertemplate,
-            )
+                name="Data",
+            ),
+            # Adding Regression Line
+            go.Scatter(
+                y=df['regression_line'] * 10,
+                x=df['date'],
+                mode='lines',
+                line=dict(color='red', width=1.5),
+                name="Regression Line",
+            ),
         ]
     )
 
