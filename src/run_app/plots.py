@@ -86,7 +86,7 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
     df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
 
     # Decay for short runs
-    df['decay'] = df['distance_km'].apply(lambda d: 0.15 * (1 - d / 6) if d <= 6 else 0)
+    df['decay'] = df['distance_km'].apply(lambda d: 0.25 * (1 - d / 6) if d <= 6 else 0)
     df['adjusted_heartrate_with_decay'] = df['average_heartrate'] / (1 + df['decay'])
 
     df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
