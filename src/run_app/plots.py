@@ -82,7 +82,7 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
     ELEVATION_ADJUSTMENT_FACTOR = 10
     df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
     df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
-    df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds']
+    df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
     df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
     df['heart_rate_efficiency'] = df['adjusted_speed'] / df['adjusted_heartrate']
     st.write(df['adjusted_speed'], df['adjusted_heartrate'])
@@ -98,7 +98,7 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
     fig = go.Figure(
         data=[
             go.Scatter(
-                y=df['heart_rate_efficiency'] * 10000,
+                y=df['heart_rate_efficiency'] * 10,
                 x=df['date'],  # Replace 'date' with the name of your date column
                 mode='lines+markers',
                 line=dict(color='rgba(60, 75, 255, 0.6)', width=2.5),
