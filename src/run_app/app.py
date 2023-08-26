@@ -71,8 +71,8 @@ def convert_pace(pace):
 def pace_threshold(df):
     pace_threshold = st.number_input(
         "Exclude runs slower than this pace (min/km)",
-        value=7.2,
-        step=0.1,
+        value=7,
+        step=1,
     )
     df = df[df["pace"] <= pace_threshold]
     return df
