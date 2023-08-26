@@ -87,9 +87,7 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
         ]
     )
 
-    fig.update_layout(
-        title="Heart Rate Efficiency Over Time", yaxis_title="Efficiency (m/s per bpm)", plot_bgcolor="white"
-    )
+    fig.update_layout(title="Heart Rate Efficiency Over Time", yaxis_title="Efficiency (m/s per bpm)")
     st.plotly_chart(fig, use_container_width=True)
 
 
