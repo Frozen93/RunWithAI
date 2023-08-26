@@ -119,7 +119,7 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
                 y=df['regression_line'] * 10,
                 x=df['date'],
                 mode='lines',
-                line=dict(color='red', width=1.5),
+                line=dict(color='rgba(231, 29, 54, 0.8)', width=1.5),
                 name="Regression Line",
             ),
         ]
