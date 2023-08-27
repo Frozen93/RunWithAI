@@ -80,143 +80,121 @@ def adjust_heart_rate_for_cardiac_drift(row):
 
 @st.cache_data
 def plot_heart_rate_efficiency(df: pd.DataFrame):
-    try:
-        ELEVATION_ADJUSTMENT_FACTOR = 11
-        df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
-        df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
-        df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
-        df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
-        df['decay'] = df['distance_km'].apply(lambda d: 1 - 0.12 * (1 - d / 8) if d <= 6 else 1)
-        df['heart_rate_efficiency'] = (df['adjusted_speed'] / df['adjusted_heartrate']) * df['decay']
+    ELEVATION_ADJUSTMENT_FACTOR = 11
+    df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
+    df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
+    df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
+    df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
+    df['decay'] = df['distance_km'].apply(lambda d: 1 - 0.12 * (1 - d / 8) if d <= 6 else 1)
+    df['heart_rate_efficiency'] = (df['adjusted_speed'] / df['adjusted_heartrate']) * df['decay']
+    customdata = df[["distance_km", "pace", "adjusted_distance", "average_heartrate", "total_elevation_gain"]].values
+    hovertemplate = (
+        "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
+        "<b>Distance:</b> %{customdata[0]:.2f} km<br>"
+        "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
+        "<b>Adjusted Distance:</b> %{customdata[2]:.2f} km<br>"
+        "<b>Average Heartrate:</b> %{customdata[3]:.2f}<br>"
+        "<b>Elevation Gain:</b> %{customdata[4]:.2f} m<br>"
+        "<extra></extra>"  # This removes the additional info box in hover
+    )
+    # Regression Line Calculation
+    df['heart_rate_efficiency'] = pd.to_numeric(df['heart_rate_efficiency'], errors='coerce')
+    mask = pd.notna(df['heart_rate_efficiency'])  # Mask for non-NaN values
+    slope, intercept = np.polyfit(df[mask]['date'].astype(np.int64), df[mask]['heart_rate_efficiency'], 1)
+    df['regression_line'] = slope * df['date'].astype(np.int64) + intercept
 
-        # Ensure that data types are correct
-        df['heart_rate_efficiency'] = pd.to_numeric(df['heart_rate_efficiency'], errors='coerce')
+    # Plotting
+    fig = go.Figure(
+        data=[
+            go.Scatter(
+                y=df['heart_rate_efficiency'] * 10,
+                x=df['date'],
+                mode='lines+markers',
+                line=dict(color='rgba(60, 75, 255, 0.6)', width=2.5),
+                marker=dict(color="rgba(137, 146, 255, 0.8)", size=8),
+                customdata=customdata,
+                hovertemplate=hovertemplate,
+                name="Data",
+            ),
+            # Adding Regression Line
+            go.Scatter(
+                y=df['regression_line'] * 10,
+                x=df['date'],
+                mode='lines',
+                line=dict(color='rgba(231, 29, 54, 0.8)', width=1.5),
+                name="Regression Line",
+            ),
+        ]
+    )
 
-        mask = pd.notna(df['heart_rate_efficiency'])  # Mask for non-NaN values
-        if mask.sum() == 0:
-            raise ValueError("All efficiency values are NaN. Check the input data or calculations.")
+    fig.update_layout(
+        title="Heart Rate Efficiency Over Time",
+        yaxis_title="Heart Rate Efficiency",
+        xaxis_title="Date",
+        plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
+    )
 
-        slope, intercept = np.polyfit(df[mask]['date'].astype(np.int64), df[mask]['heart_rate_efficiency'], 1)
-        df['regression_line'] = slope * df['date'].astype(np.int64) + intercept
-
-        customdata = df[
-            ["distance_km", "pace", "adjusted_distance", "average_heartrate", "total_elevation_gain"]
-        ].values
-
-        hovertemplate = (
-            "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
-            "<b>Distance:</b> %{customdata[0]:.2f} km<br>"
-            "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
-            "<b>Adjusted Distance:</b> %{customdata[2]:.2f} km<br>"
-            "<b>Average Heartrate:</b> %{customdata[3]:.2f}<br>"
-            "<b>Elevation Gain:</b> %{customdata[4]:.2f} m<br>"
-            "<extra></extra>"  # This removes the additional info box in hover
-        )
-
-        fig = go.Figure(
-            data=[
-                go.Scatter(
-                    y=df['heart_rate_efficiency'] * 10,
-                    x=df['date'],
-                    mode='lines+markers',
-                    line=dict(color='rgba(60, 75, 255, 0.6)', width=2.5),
-                    marker=dict(color="rgba(137, 146, 255, 0.8)", size=8),
-                    customdata=customdata,
-                    hovertemplate=hovertemplate,
-                    name="Data",
-                ),
-                go.Scatter(
-                    y=df['regression_line'] * 10,
-                    x=df['date'],
-                    mode='lines',
-                    line=dict(color='rgba(231, 29, 54, 0.8)', width=1.5),
-                    name="Regression Line",
-                ),
-            ]
-        )
-
-        fig.update_layout(
-            title="Heart Rate Efficiency Over Time",
-            yaxis_title="Heart Rate Efficiency",
-            xaxis_title="Date",
-            plot_bgcolor="rgba(0,0,0,0)",
-            showlegend=False,
-        )
-
-        st.plotly_chart(fig, use_container_width=True)
-
-    except Exception as e:
-        st.write(f"An error occurred: {e}")
+    st.plotly_chart(fig, use_container_width=True)
 
 
 def plot_fatigue_sport(df):
-    # Check if the dataframe is empty or contains only one row
-    if df.empty or len(df) <= 1:
-        st.warning("Need more than 1 run to calculate fatigue")
-        return
+    median_heartrate = df['average_heartrate'].replace('None', np.nan).dropna().median()
+    df['average_heartrate'].replace({"None": np.nan}, inplace=True)
+    df['average_heartrate'].fillna(median_heartrate, inplace=True)
 
-    try:
-        median_heartrate = df['average_heartrate'].replace('None', np.nan).dropna().median()
-        df['average_heartrate'].replace({"None": np.nan}, inplace=True)
-        df['average_heartrate'].fillna(median_heartrate, inplace=True)
+    df['HRPR'] = df['average_heartrate'] / df['average_speed_metres_per_second']
 
-        df['HRPR'] = df['average_heartrate'] / df['average_speed_metres_per_second']
+    df['date'] = df['date'].dt.tz_localize(None)
+    df['week'] = df['date'].dt.to_period('W-MON')
 
-        df['date'] = df['date'].dt.tz_localize(None)
-        df['week'] = df['date'].dt.to_period('W-MON')
+    df['days_since_last_workout'] = df['date'].diff().dt.days
 
-        df['days_since_last_workout'] = df['date'].diff().dt.days
+    weekly_data = (
+        df.groupby('week')
+        .agg({'distance_km': 'sum', 'max_heartrate': 'mean', 'HRPR': 'mean', 'days_since_last_workout': 'mean'})
+        .reset_index()
+    )
 
-        weekly_data = (
-            df.groupby('week')
-            .agg({'distance_km': 'sum', 'max_heartrate': 'mean', 'HRPR': 'mean', 'days_since_last_workout': 'mean'})
-            .reset_index()
-        )
+    weekly_data.columns = ['week', 'Weekly Volume', 'Weekly Intensity', 'HRPR', 'Days Since Last']
 
-        weekly_data.columns = ['week', 'Weekly Volume', 'Weekly Intensity', 'HRPR', 'Days Since Last']
+    weekly_data['Normalized HRPR'] = (weekly_data['HRPR'] - weekly_data['HRPR'].min()) / (
+        weekly_data['HRPR'].max() - weekly_data['HRPR'].min()
+    )
+    weekly_data['Normalized Volume'] = (weekly_data['Weekly Volume'] - weekly_data['Weekly Volume'].min()) / (
+        weekly_data['Weekly Volume'].max() - weekly_data['Weekly Volume'].min()
+    )
+    weekly_data['Normalized Intensity'] = (weekly_data['Weekly Intensity'] - weekly_data['Weekly Intensity'].min()) / (
+        weekly_data['Weekly Intensity'].max() - weekly_data['Weekly Intensity'].min()
+    )
+    DECAY_FACTOR = 0.9
+    weekly_data['Fatigue Adjustment'] = 1 - (weekly_data['Days Since Last'] * (1 - DECAY_FACTOR))
+    weekly_data['Fatigue'] = (
+        100
+        * weekly_data['Fatigue Adjustment']
+        * (weekly_data['Normalized HRPR'] + weekly_data['Normalized Volume'] + weekly_data['Normalized Intensity'])
+        / 3
+        + 10
+    )
 
-        weekly_data['Normalized HRPR'] = (weekly_data['HRPR'] - weekly_data['HRPR'].min()) / (
-            weekly_data['HRPR'].max() - weekly_data['HRPR'].min()
-        )
-        weekly_data['Normalized Volume'] = (weekly_data['Weekly Volume'] - weekly_data['Weekly Volume'].min()) / (
-            weekly_data['Weekly Volume'].max() - weekly_data['Weekly Volume'].min()
-        )
-        weekly_data['Normalized Intensity'] = (
-            weekly_data['Weekly Intensity'] - weekly_data['Weekly Intensity'].min()
-        ) / (weekly_data['Weekly Intensity'].max() - weekly_data['Weekly Intensity'].min())
-        DECAY_FACTOR = 0.9
-        weekly_data['Fatigue Adjustment'] = 1 - (weekly_data['Days Since Last'] * (1 - DECAY_FACTOR))
-        weekly_data['Fatigue'] = (
-            100
-            * weekly_data['Fatigue Adjustment']
-            * (weekly_data['Normalized HRPR'] + weekly_data['Normalized Volume'] + weekly_data['Normalized Intensity'])
-            / 3
-            + 10
-        )
-    except ZeroDivisionError:
-        st.error("Error: Division by zero detected. Please check your data for anomalies or missing values.")
-
-    except Exception as e:
-        st.error(f"An unexpected error occurred: {str(e)}. Please review the data you've provided.")
-
-        current_fatigue = weekly_data['Fatigue'].iloc[-1]
-        fig = go.Figure(
-            data=[
-                go.Pie(
-                    labels=['Fatigue', 'Remaining'],
-                    values=[current_fatigue, 100 - current_fatigue],
-                    marker=dict(colors=['rgb(190, 15, 15)', 'rgb(38, 175, 38)']),
-                    textfont=dict(color='white', size=15, family="Courier New, bold"),
-                    showlegend=False,
-                    hole=0.5,
-                )
-            ]
-        )
-        fig.update_layout(margin=dict(t=0, b=0, l=30, r=50))
-        st.plotly_chart(
-            fig,
-            use_container_width=True,
-        )
+    current_fatigue = weekly_data['Fatigue'].iloc[-1]
+    fig = go.Figure(
+        data=[
+            go.Pie(
+                labels=['Fatigue', 'Remaining'],
+                values=[current_fatigue, 100 - current_fatigue],
+                marker=dict(colors=['rgb(190, 15, 15)', 'rgb(38, 175, 38)']),
+                textfont=dict(color='white', size=15, family="Courier New, bold"),
+                showlegend=False,
+                hole=0.5,
+            )
+        ]
+    )
+    fig.update_layout(margin=dict(t=0, b=0, l=30, r=50))
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+    )
 
 
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
