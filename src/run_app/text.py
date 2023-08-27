@@ -21,6 +21,7 @@ texts = {
 |                 | [**Kettlebell Lunges**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=5m6s) | Lunge while holding kettlebells, keeping chest upright. | 2-3 sets × 10 reps |
 |                 | [**Single Leg RDLs**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=5m51s) | Holding a kettlebell, hinge at the hip while balancing on one leg. | 2-3 sets × 4-5 reps |
 | **Balance**     | [**Bosu Balance**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=6m23s) | Stand on a Bosu ball, working on balance and stability. | 2-3 sets × 15-20 sec |
+|                 | [**Kettle Bell Sprint Lunge**](https://www.youtube.com/watch?v=2CcnMcCNURk&t=16m1s) | Holding a kettlebell, 1 leck balance into sprinting position. Variation: No kettlebell, stand on balance Pad/Bosu | 2-3 sets × 8-12 reps |
 | **Flexibility** | [**Slow Controlled Step Up**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=6m40s) | Step up onto a platform slowly, emphasizing control. | 2-3 sets × 15-20 sec |
 |                 | [**Active Step Up with Knee Drive**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=6m54s) | Step up onto a platform and drive the opposite knee up. | 2-3 sets × 15-20 sec per side |
 |                 | [**Lunge to Hip Drive**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=7m19s) | Lunge backward, then drive the hip forward onto a box. | 2-3 sets × 8 15-20 sec per side |
