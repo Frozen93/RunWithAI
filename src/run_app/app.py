@@ -408,7 +408,6 @@ def main():
             plots.plot_distance_histogram(df)
 
         st.markdown("### Ressources")
-        st.markdown("### Summary")
         st.markdown(text.texts["gym_summary"])
 
         st.subheader("Ask the AI any question related to your running data")
