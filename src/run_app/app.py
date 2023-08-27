@@ -8,6 +8,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.agents.agent_types import AgentType
 from pydantic import ValidationError
 from langchain.agents.openai_functions_agent.base import OutputParserException
+from mitosheet.streamlit.v1 import spreadsheet
 import requests
 import json
 import textwrap
@@ -381,9 +382,9 @@ def main():
         display_comparison_metrics(df, df_raw)
 
         with st.expander("Show raw data"):
-            st.dataframe(
+            spreadsheet(
                 df,
-                use_container_width=True,
+                # use_container_width=True,
             )
 
         metrics_list = [
