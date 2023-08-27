@@ -407,15 +407,9 @@ def main():
             plots.plot_pace_distribution(df)
             plots.plot_distance_histogram(df)
 
-        res_a, _, res_b = st.columns((6, 1, 6))
-
-        with res_a:
-            st.markdown("### Ressources")
-            st.video("https://www.youtube.com/watch?v=SnNlrFcXjVU")
-            st.video("https://www.youtube.com/watch?v=ANGJPTGREiE")
-        with res_b:
-            st.markdown("### Summary")
-            st.markdown(text.texts["gym_summary"])
+        st.markdown("### Ressources")
+        st.markdown("### Summary")
+        st.markdown(text.texts["gym_summary"])
 
         st.subheader("Ask the AI any question related to your running data")
         st.markdown("*Example: Show me my longest run!*")
