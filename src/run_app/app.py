@@ -338,7 +338,7 @@ def main():
     setup_config()
     apply_styles()
 
-    l, m, _, r = st.columns((1, 1, 4, 1))
+    l, m, _, r = st.columns((1, 1, 3, 1))
     with l:
         st.markdown("# AI Runner")
     with m:
