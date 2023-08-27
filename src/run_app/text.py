@@ -7,6 +7,7 @@ texts = {
 |                 | [**Heel Walks**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=2m57s) | Walk solely on your heels, keeping the balls of your feet elevated. | 2-3 sets × 10-15m |
 |                 | [**Lunge Circuit**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=3m39s) | Perform a series of lunges, incorporating variations using a medicine ball. | 1 set × 5-6 reps each side |
 | **Hips & Core** | [**Hip Raises**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=3m12s) | Lie on back, knees bent. Lift hips to form a straight line from shoulders to knees. | 2-3 sets × 6-8 reps |
+|                 | [**Hip Flexor Single Leg Cable**](https://www.youtube.com/watch?v=9wohwZ1VymU&t=3m41s) | Lie on back, pull knee towards chest | 2-3 sets × 12-15 reps |
 |                 | [**Theraband**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=5m28s) | Execute a series of leg exercises using a resistance band. | 2-3 sets × 6-8 reps per position |
 |                 | [**Hip Lock and Knee Drive**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=6m30s) | Stand with resistance band anchored at ankle. Drive banded knee up towards chest. | 2-3 sets × 8 reps |
 |                 | [**Long Lever Glute Bridge**](https://www.youtube.com/watch?v=SnNlrFcXjVU&t=7m20s) | Lie on your back and extend one leg straight while keeping the other foot on the ground. | 2-3 sets × 5-8 sec |
