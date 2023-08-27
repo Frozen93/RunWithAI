@@ -409,7 +409,7 @@ def main():
 
         st.markdown("### Ressources")
         st.markdown(text.texts["gym_summary"])
-
+        st.markdown("___")
         st.subheader("Ask the AI any question related to your running data")
         st.markdown("*Example: Show me my longest run!*")
         user_input = st.text_input("Your question:", "")
