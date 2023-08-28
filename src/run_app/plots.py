@@ -139,62 +139,65 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
 
 
 def plot_fatigue_sport(df):
-    median_heartrate = df['average_heartrate'].replace('None', np.nan).dropna().median()
-    df['average_heartrate'].replace({"None": np.nan}, inplace=True)
-    df['average_heartrate'].fillna(median_heartrate, inplace=True)
+    try:
+        median_heartrate = df['average_heartrate'].replace('None', np.nan).dropna().median()
+        df['average_heartrate'].replace({"None": np.nan}, inplace=True)
+        df['average_heartrate'].fillna(median_heartrate, inplace=True)
 
-    df['HRPR'] = df['average_heartrate'] / df['average_speed_metres_per_second']
+        df['HRPR'] = df['average_heartrate'] / df['average_speed_metres_per_second']
 
-    df['date'] = df['date'].dt.tz_localize(None)
-    df['week'] = df['date'].dt.to_period('W-MON')
+        df['date'] = df['date'].dt.tz_localize(None)
+        df['week'] = df['date'].dt.to_period('W-MON')
 
-    df['days_since_last_workout'] = df['date'].diff().dt.days
+        df['days_since_last_workout'] = df['date'].diff().dt.days
 
-    weekly_data = (
-        df.groupby('week')
-        .agg({'distance_km': 'sum', 'max_heartrate': 'mean', 'HRPR': 'mean', 'days_since_last_workout': 'mean'})
-        .reset_index()
-    )
+        weekly_data = (
+            df.groupby('week')
+            .agg({'distance_km': 'sum', 'max_heartrate': 'mean', 'HRPR': 'mean', 'days_since_last_workout': 'mean'})
+            .reset_index()
+        )
 
-    weekly_data.columns = ['week', 'Weekly Volume', 'Weekly Intensity', 'HRPR', 'Days Since Last']
+        weekly_data.columns = ['week', 'Weekly Volume', 'Weekly Intensity', 'HRPR', 'Days Since Last']
 
-    weekly_data['Normalized HRPR'] = (weekly_data['HRPR'] - weekly_data['HRPR'].min()) / (
-        weekly_data['HRPR'].max() - weekly_data['HRPR'].min()
-    )
-    weekly_data['Normalized Volume'] = (weekly_data['Weekly Volume'] - weekly_data['Weekly Volume'].min()) / (
-        weekly_data['Weekly Volume'].max() - weekly_data['Weekly Volume'].min()
-    )
-    weekly_data['Normalized Intensity'] = (weekly_data['Weekly Intensity'] - weekly_data['Weekly Intensity'].min()) / (
-        weekly_data['Weekly Intensity'].max() - weekly_data['Weekly Intensity'].min()
-    )
-    DECAY_FACTOR = 0.9
-    weekly_data['Fatigue Adjustment'] = 1 - (weekly_data['Days Since Last'] * (1 - DECAY_FACTOR))
-    weekly_data['Fatigue'] = (
-        100
-        * weekly_data['Fatigue Adjustment']
-        * (weekly_data['Normalized HRPR'] + weekly_data['Normalized Volume'] + weekly_data['Normalized Intensity'])
-        / 3
-        + 10
-    )
+        weekly_data['Normalized HRPR'] = (weekly_data['HRPR'] - weekly_data['HRPR'].min()) / (
+            weekly_data['HRPR'].max() - weekly_data['HRPR'].min()
+        )
+        weekly_data['Normalized Volume'] = (weekly_data['Weekly Volume'] - weekly_data['Weekly Volume'].min()) / (
+            weekly_data['Weekly Volume'].max() - weekly_data['Weekly Volume'].min()
+        )
+        weekly_data['Normalized Intensity'] = (
+            weekly_data['Weekly Intensity'] - weekly_data['Weekly Intensity'].min()
+        ) / (weekly_data['Weekly Intensity'].max() - weekly_data['Weekly Intensity'].min())
+        DECAY_FACTOR = 0.9
+        weekly_data['Fatigue Adjustment'] = 1 - (weekly_data['Days Since Last'] * (1 - DECAY_FACTOR))
+        weekly_data['Fatigue'] = (
+            100
+            * weekly_data['Fatigue Adjustment']
+            * (weekly_data['Normalized HRPR'] + weekly_data['Normalized Volume'] + weekly_data['Normalized Intensity'])
+            / 3
+            + 10
+        )
 
-    current_fatigue = weekly_data['Fatigue'].iloc[-1]
-    fig = go.Figure(
-        data=[
-            go.Pie(
-                labels=['Fatigue', 'Remaining'],
-                values=[current_fatigue, 100 - current_fatigue],
-                marker=dict(colors=['rgb(190, 15, 15)', 'rgb(38, 175, 38)']),
-                textfont=dict(color='white', size=15, family="Courier New, bold"),
-                showlegend=False,
-                hole=0.5,
-            )
-        ]
-    )
-    fig.update_layout(margin=dict(t=0, b=0, l=30, r=50))
-    st.plotly_chart(
-        fig,
-        use_container_width=True,
-    )
+        current_fatigue = weekly_data['Fatigue'].iloc[-1]
+        fig = go.Figure(
+            data=[
+                go.Pie(
+                    labels=['Fatigue', 'Remaining'],
+                    values=[current_fatigue, 100 - current_fatigue],
+                    marker=dict(colors=['rgb(190, 15, 15)', 'rgb(38, 175, 38)']),
+                    textfont=dict(color='white', size=15, family="Courier New, bold"),
+                    showlegend=False,
+                    hole=0.5,
+                )
+            ]
+        )
+        fig.update_layout(margin=dict(t=0, b=0, l=30, r=50))
+        st.plotly_chart(
+            fig,
+            use_container_width=True,
+        )
+    except:
+        st.warning("Not enought heartrate date to calculate fatigue.")
 
 
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
