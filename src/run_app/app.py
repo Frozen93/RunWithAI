@@ -382,7 +382,7 @@ def main():
         display_comparison_metrics(df, df_raw)
 
         with st.expander(
-            "Work with your data - create plots and analysis without coding (powered by [Mito](https://www.trymito.io/spreadsheet-automation)"
+            "Work with your data - create plots and analysis without coding (powered by [Mito](https://www.trymito.io/spreadsheet-automation))"
         ):
             spreadsheet(
                 df,
