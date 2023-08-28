@@ -381,7 +381,7 @@ def main():
             df = distance_threshold(df)
         display_comparison_metrics(df, df_raw)
 
-        with st.expander("Show raw data"):
+        with st.expander("Work with your data - create plots and analysis without coding (powered by Mito)"):
             spreadsheet(
                 df,
                 # use_container_width=True,
