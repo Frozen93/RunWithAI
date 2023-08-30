@@ -27,5 +27,23 @@ texts = {
 |                 | [**Lunge to Hip Drive**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=7m19s) | Lunge backward, then drive the hip forward onto a box. | 2-3 sets × 8 15-20 sec per side |
 |                 | [**Kettlebell Squat**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=7m47s) | Perform a squat while holding a kettlebell. | 2-3 sets × 10-15 reps |
 | **Recovery**    | [**Foam Rolling**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=2m15s) | Use a foam roller to massage and release muscle tightness. | 1-2 sets 20-30 secs |
-"""
+""",
+    "training_plan": """
+|     | Mon        | Tue          | Wed        | Thu            | Fri        | Sat        | Sun          |
+|-----|------------|--------------|------------|----------------|------------|------------|--------------|
+|**Week 1**|            |              |            |                |            |            |              |
+|Training| Rest Day   | Fartlek Run  | Rest Day   | Cruise Intervals| Rest Day   | Easy Run   | Long Run     |
+|Duration| -          | 50m - 1h 10m | -          | 50m - 1h 10m    | -          | 40m - 1h   | 1h 30m       |
+|Pace| -          | 6:47 - 7:17 / 5:36  | -          | 5:21 - 5:33    | -          | 6:08 - 6:42   | 6:09 - 6:55      |
+|Daily Goal & Workout| Recovery Day | Optional workout: Fartlek| Cross-train or easy run | Cruise Intervals: Stamina repeats| Optional run day| Hour runs for toughness| Endurance for speed training|
+
+|     | Mon        | Tue          | Wed        | Thu            | Fri        | Sat        | Sun          |
+|-----|------------|--------------|------------|----------------|------------|------------|--------------|
+|**Week 2**|            |              |            |                |            |            |              |
+|Training| Rest Day   | Easy Run     | Rest Day   | Tempo Intervals | Rest Day   | Easy Run   | Long Run     |
+|Duration| -          | 50m - 1h 10m | -          | 50m - 1h 10m    | -          | 40m - 1h   | 1h 30m - 1h 45m|
+|Pace| -          | 6:08 - 6:42  | -          | 5:26 - 5:37    | -          | 6:08 - 6:42   | 6:09 - 6:55      |
+|Daily Goal & Workout| Recovery Day | Hour+ runs for strength | Cross-train or easy run | Tempo Intervals: Run relaxed yet fast | Optional run day | Shorter run for recovery | Long Run Pace |
+
+""",
 }

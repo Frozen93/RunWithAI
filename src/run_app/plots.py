@@ -80,62 +80,67 @@ def adjust_heart_rate_for_cardiac_drift(row):
 
 @st.cache_data
 def plot_heart_rate_efficiency(df: pd.DataFrame):
-    ELEVATION_ADJUSTMENT_FACTOR = 11
-    df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
-    df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
-    df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
-    df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
-    df['decay'] = df['distance_km'].apply(lambda d: 1 - 0.12 * (1 - d / 8) if d <= 6 else 1)
-    df['heart_rate_efficiency'] = (df['adjusted_speed'] / df['adjusted_heartrate']) * df['decay']
-    customdata = df[["distance_km", "pace", "adjusted_distance", "average_heartrate", "total_elevation_gain"]].values
-    hovertemplate = (
-        "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
-        "<b>Distance:</b> %{customdata[0]:.2f} km<br>"
-        "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
-        "<b>Adjusted Distance:</b> %{customdata[2]:.2f} km<br>"
-        "<b>Average Heartrate:</b> %{customdata[3]:.2f}<br>"
-        "<b>Elevation Gain:</b> %{customdata[4]:.2f} m<br>"
-        "<extra></extra>"  # This removes the additional info box in hover
-    )
-    # Regression Line Calculation
-    df['heart_rate_efficiency'] = pd.to_numeric(df['heart_rate_efficiency'], errors='coerce')
-    mask = pd.notna(df['heart_rate_efficiency'])  # Mask for non-NaN values
-    slope, intercept = np.polyfit(df[mask]['date'].astype(np.int64), df[mask]['heart_rate_efficiency'], 1)
-    df['regression_line'] = slope * df['date'].astype(np.int64) + intercept
+    try:
+        ELEVATION_ADJUSTMENT_FACTOR = 11
+        df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
+        df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
+        df['adjusted_speed'] = df['adjusted_distance'] / df['moving_time_seconds'] * 1000
+        df['adjusted_heartrate'] = df.apply(adjust_heart_rate_for_cardiac_drift, axis=1)
+        df['decay'] = df['distance_km'].apply(lambda d: 1 - 0.12 * (1 - d / 8) if d <= 6 else 1)
+        df['heart_rate_efficiency'] = (df['adjusted_speed'] / df['adjusted_heartrate']) * df['decay']
+        customdata = df[
+            ["distance_km", "pace", "adjusted_distance", "average_heartrate", "total_elevation_gain"]
+        ].values
+        hovertemplate = (
+            "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
+            "<b>Distance:</b> %{customdata[0]:.2f} km<br>"
+            "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
+            "<b>Adjusted Distance:</b> %{customdata[2]:.2f} km<br>"
+            "<b>Average Heartrate:</b> %{customdata[3]:.2f}<br>"
+            "<b>Elevation Gain:</b> %{customdata[4]:.2f} m<br>"
+            "<extra></extra>"  # This removes the additional info box in hover
+        )
+        # Regression Line Calculation
+        df['heart_rate_efficiency'] = pd.to_numeric(df['heart_rate_efficiency'], errors='coerce')
+        mask = pd.notna(df['heart_rate_efficiency'])  # Mask for non-NaN values
+        slope, intercept = np.polyfit(df[mask]['date'].astype(np.int64), df[mask]['heart_rate_efficiency'], 1)
+        df['regression_line'] = slope * df['date'].astype(np.int64) + intercept
 
-    # Plotting
-    fig = go.Figure(
-        data=[
-            go.Scatter(
-                y=df['heart_rate_efficiency'] * 10,
-                x=df['date'],
-                mode='lines+markers',
-                line=dict(color='rgba(60, 75, 255, 0.6)', width=2.5),
-                marker=dict(color="rgba(137, 146, 255, 0.8)", size=8),
-                customdata=customdata,
-                hovertemplate=hovertemplate,
-                name="Data",
-            ),
-            # Adding Regression Line
-            go.Scatter(
-                y=df['regression_line'] * 10,
-                x=df['date'],
-                mode='lines',
-                line=dict(color='rgba(231, 29, 54, 0.8)', width=1.5),
-                name="Regression Line",
-            ),
-        ]
-    )
+        # Plotting
+        fig = go.Figure(
+            data=[
+                go.Scatter(
+                    y=df['heart_rate_efficiency'] * 10,
+                    x=df['date'],
+                    mode='lines+markers',
+                    line=dict(color='rgba(60, 75, 255, 0.6)', width=2.5),
+                    marker=dict(color="rgba(137, 146, 255, 0.8)", size=8),
+                    customdata=customdata,
+                    hovertemplate=hovertemplate,
+                    name="Data",
+                ),
+                # Adding Regression Line
+                go.Scatter(
+                    y=df['regression_line'] * 10,
+                    x=df['date'],
+                    mode='lines',
+                    line=dict(color='rgba(231, 29, 54, 0.8)', width=1.5),
+                    name="Regression Line",
+                ),
+            ]
+        )
 
-    fig.update_layout(
-        title="Heart Rate Efficiency Over Time",
-        yaxis_title="Heart Rate Efficiency",
-        xaxis_title="Date",
-        plot_bgcolor="rgba(0,0,0,0)",
-        showlegend=False,
-    )
+        fig.update_layout(
+            title="Heart Rate Efficiency Over Time",
+            yaxis_title="Heart Rate Efficiency",
+            xaxis_title="Date",
+            plot_bgcolor="rgba(0,0,0,0)",
+            showlegend=False,
+        )
 
-    st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
+    except:
+        st.warning("Not enought Heart Rate data")
 
 
 def plot_fatigue_sport(df):
