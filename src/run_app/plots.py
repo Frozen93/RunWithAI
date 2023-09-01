@@ -53,7 +53,7 @@ def plot_distance_histogram(df):
         data=[
             go.Histogram(
                 x=df["distance_km"],
-                nbinsx=50,
+                nbinsx=30,
                 marker_color="rgba(231, 29, 54, 0.5)",
                 marker=dict(line=dict(color="rgba(238, 98, 116, 0.8)", width=1)),
             ),
@@ -89,15 +89,14 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
         df['decay'] = df['distance_km'].apply(lambda d: 1 - 0.12 * (1 - d / 8) if d <= 6 else 1)
         df['heart_rate_efficiency'] = (df['adjusted_speed'] / df['adjusted_heartrate']) * df['decay']
         customdata = df[
-            ["distance_km", "pace", "adjusted_distance", "average_heartrate", "total_elevation_gain"]
+            ["distance_km", "pace", "average_heartrate", "total_elevation_gain"]
         ].values
         hovertemplate = (
             "<b>Date:</b> %{x}<br><b>Efficiency:</b> %{y:.2f}<br>"
             "<b>Distance:</b> %{customdata[0]:.2f} km<br>"
             "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
-            "<b>Adjusted Distance:</b> %{customdata[2]:.2f} km<br>"
-            "<b>Average Heartrate:</b> %{customdata[3]:.2f}<br>"
-            "<b>Elevation Gain:</b> %{customdata[4]:.2f} m<br>"
+            "<b>Average Heartrate:</b> %{customdata[2]:.2f}<br>"
+            "<b>Elevation Gain:</b> %{customdata[3]:.2f} m<br>"
             "<extra></extra>"  # This removes the additional info box in hover
         )
         # Regression Line Calculation
