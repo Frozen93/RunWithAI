@@ -29,41 +29,18 @@ texts = {
 | **Recovery**    | [**Foam Rolling**](https://www.youtube.com/watch?v=ANGJPTGREiE&t=2m15s) | Use a foam roller to massage and release muscle tightness. | 1-2 sets 20-30 secs |
 """,
     "training_plan": """
-|       | Mon       | Tue               | Wed       | Thu                 | Fri       | Sat       | Sun                   |
-|-------|-----------|-------------------|-----------|---------------------|-----------|-----------|-----------------------|
-|**Week 1**|           |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Fartlek Run       | Rest Day  | Cruise Intervals    | Rest Day  | Easy Run  | Long Run              |
-|Duration| -         | 50m - 1h 10m      | -         | 50m - 1h 10m        | -         | 40m - 1h  | 1h 30m                |
-|Pace    | -         | Optional          | -         | 5:21 - 5:33         | -         | 6:08 - 6:42| 6:09 - 6:55           |
-|Daily Goal & Workout| Recovery Day | Optional Fartlek | Cross-train or easy run | Stamina Repeats| Optional run day| One-hour runs| Endurance for speed|
-|**Week 2**|           |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Easy Run          | Rest Day  | Tempo Intervals     | Rest Day  | Easy Run  | Long Run              |
-|Duration| -         | 50m - 1h 10m      | -         | 50m - 1h 10m        | -         | 40m - 1h  | 1h 30m - 1h 45m       |
-|Pace    | -         | 6:08 - 6:42       | -         | 5:26 - 5:37         | -         | 6:08 - 6:42| 6:09 - 6:55           |
-|Daily Goal & Workout| Recovery Day | Hour+ Runs | Cross-train or easy run | Relaxed yet Fast| Optional run day| Shorter Run| Long Run Pace|
-|**Week 3**|           |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Progression Run   | Rest Day  | Speed Workout       | Rest Day  | Easy Run  | Long Run              |
-|Duration| -         | 1h 20m - 1h 30m   | -         | 1h - 1h 20m         | -         | 40m - 1h  | 1h 30m - 1h 45m       |
-|**Week 4**|           |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Easy Run          | Rest Day  | Tempo Run           | Rest Day  | Easy Run  | Long Run              |
-|Duration| -         | 40m - 50m         | -         | 50m - 1h 10m        | -         | 30m - 40m | 1h 30m                |
-|**Week 5**|           |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Progression Run   | Rest Day  | Speed Workout       | Rest Day  | Easy Run  | Fast Finish Long Run  |
-|Duration| -         | 1h 20m - 1h 30m   | -         | 1h - 1h 20m         | -         | 40m - 1h  | 1h 45m - 2h 15m       |
-|**Week 6**|           |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Fartlek Run       | Rest Day  | Tempo Intervals     | Rest Day  | Easy Run  | Long Run              |
-|Duration| -         | 50m - 1h 10m      | -         | 50m - 1h 10m        | -         | 30m - 40m | 1h 45m - 2h           |
-|**Week 7**|           |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Progression Run   | Rest Day  | Speed Workout       | Rest Day  | Easy Run  | Fast Finish Long Run  |
-|Duration| -         | 1h 20m - 1h 30m   | -         | 1h - 1h 20m         | -         | 30m - 40m | 1h 45m - 2h 15m       |
-|**Week 8**|           |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Easy Run          | Rest Day  | Tempo Run           | Rest Day  | Easy Run  | Long Run              |
-|Duration| -         | 1h - 1h 10m       | -         | 1h - 1h 30m         | -         | 40m - 1h  | 1h 30m - 1h 45m       |
-|**Week 9**|           |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Fartlek Run       | Rest Day  | Steady State Run    | Rest Day  | Easy Run  | Fast Finish Long Run  |
-|Duration| -         | 50m - 1h 10m      | -         | 1h - 1h 20m         | -         | 30m - 40m | 1h 30m - 2h           |
-|**Week 10**|          |                   |           |                     |           |           |                       |
-|Training| Rest Day  | Cruise Intervals  | Rest Day  | Fartlek Run         | Rest Day  | Easy Run  | RACE DAY!             |
-|Duration| -         | 40m - 1h          | -         | 40m - 1h            | -         | 30m       | -                     |
+| Week | Sunday     | Monday      | Tuesday    | Wednesday     | Thursday    | Friday    | Saturday   |
+|------|------------|-------------|------------|---------------|-------------|-----------|------------|
+| 1    | Rest Day   | Fartlek Run (50m - 1h 10m) | Rest Day  | Cruise Intervals (50m - 1h 10m) | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m) |
+| 2    | Rest Day   | Easy Run (50m - 1h 10m)    | Rest Day  | Tempo Intervals (50m - 1h 10m)  | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m - 1h 45m) |
+| 3    | Rest Day   | Fartlek Run (50m - 1h 10m) | Rest Day  | Cruise Intervals (50m - 1h 10m) | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m) |
+| 4    | Rest Day   | Easy Run (50m - 1h 10m)    | Rest Day  | Tempo Run (Pace: 5:31 - 5:42)   | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m) |
+| 5    | Rest Day   | Fartlek Run (50m - 1h 10m) | Rest Day  | Cruise Intervals (50m - 1h 10m) | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m) |
+| 6    | Rest Day   | Easy Run (50m - 1h 10m)    | Rest Day  | Tempo Intervals (50m - 1h 10m)  | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m) |
+| 7    | Rest Day   | Fartlek Run (50m - 1h 10m) | Rest Day  | Cruise Intervals (50m - 1h 10m) | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m) |
+| 8    | Rest Day   | Easy Run (50m - 1h 10m)    | Rest Day  | Tempo Run (Pace: 5:31 - 5:42)   | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m) |
+| 9    | Rest Day   | Fartlek Run (50m - 1h 10m) | Rest Day  | Cruise Intervals (50m - 1h 10m) | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m) |
+| 10   | Rest Day   | Easy Run (50m - 1h 10m)    | Rest Day  | Tempo Intervals (50m - 1h 10m)  | Rest Day  | Easy Run (40m - 1h) | Long Run (1h 30m) |
+
 """,
 }
