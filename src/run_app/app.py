@@ -410,8 +410,10 @@ def main():
             plots.plot_pace_distribution(df)
             plots.plot_distance_histogram(df)
 
-        st.markdown("### Ressources - Strength Training for Runners")
-        st.markdown(text.texts["gym_summary"])
+        if st.toggle("### Ressources - Strength Training for Runners"):
+            st.markdown(text.texts["gym_summary"])
+        if st.toggle("### Trainingsplan - Beispiel"):
+            st.markdown(text.texts["training_plan"])
         st.markdown("___")
         st.subheader("Ask the AI any question related to your running data")
         st.markdown("*Example: Show me my longest run!*")
