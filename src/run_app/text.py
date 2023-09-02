@@ -34,75 +34,74 @@ texts = {
 | Week  | Day      | Run Type          | Time          | Pace         | Daily Goal       |
 |-------|----------|-------------------|---------------|--------------|------------------|
 | 1     | Sun      | Rest Day          | -             | -            | Recovery         |
-|       | Mon      | Fartlek Run       | 50m-1h 10m    | 5K-10K Effort| Speed Play       |
+|       | Mon      | Fartlek Run       | 50m-1h 10m    | 5:20-5:30    | Speed Play       |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
 |       | Wed      | Cruise Intervals  | 50m-1h 10m    | 5:21-5:34    | Threshold        |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 40m-1h        | Easy         | Foundation       |
-|       | Sat      | Long Run          | 1h 30m        | Easy         | Time             |
+|       | Fri      | Easy Run          | 40m-1h        | 6:08-6:42    | Foundation       |
+|       | Sat      | Long Run          | 1h 30m        | 6:08-6:42    | Time             |
 | 2     | Sun      | Rest Day          | -             | -            | Recovery         |
-|       | Mon      | Easy Run          | 50m-1h 10m    | Easy         | Strength         |
+|       | Mon      | Easy Run          | 50m-1h 10m    | 6:08-6:42    | Strength         |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
 |       | Wed      | Tempo Intervals   | 50m-1h 10m    | 5:26-5:37    | Threshold        |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 40m-1h        | Easy         | Foundation       |
-|       | Sat      | Long Run          | 1h 30m-1h 45m | Easy         | Time             |
+|       | Fri      | Easy Run          | 40m-1h        | 6:08-6:42    | Foundation       |
+|       | Sat      | Long Run          | 1h 30m-1h 45m | 6:08-6:42    | Time             |
 | 3     | Sun      | Rest Day          | -             | -            | Recovery         |
 |       | Mon      | Progression Run   | 1h 20m-1h 30m | Varies       | Progression      |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
-|       | Wed      | Speed Workout     | 1h-1h 20m     | 5K or faster | Speed            |
+|       | Wed      | Speed Workout     | 1h-1h 20m     | 5:20         | Speed            |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 40m-1h        | Easy         | Foundation       |
-|       | Sat      | Long Run          | 1h 30m-1h 45m | Easy         | Time             |
+|       | Fri      | Easy Run          | 40m-1h        | 6:08-6:42    | Foundation       |
+|       | Sat      | Long Run          | 1h 30m-1h 45m | 6:08-6:42    | Time             |
 | 4     | Sun      | Rest Day          | -             | -            | Recovery         |
-|       | Mon      | Easy Run          | 40m-50m       | Easy         | Strength         |
+|       | Mon      | Easy Run          | 40m-50m       | 6:08-6:42    | Strength         |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
 |       | Wed      | Tempo Run         | 50m-1h 10m    | 5:31-5:42    | Threshold        |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 30m-40m       | Easy         | Foundation       |
-|       | Sat      | Long Run          | 1h 30m        | Easy         | Time             |
+|       | Fri      | Easy Run          | 30m-40m       | 6:08-6:42    | Foundation       |
+|       | Sat      | Long Run          | 1h 30m        | 6:08-6:42    | Time             |
 | 5     | Sun      | Rest Day          | -             | -            | Recovery         |
 |       | Mon      | Progression Run   | 1h 20m-1h 30m | Varies       | Progression      |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
-|       | Wed      | Speed Workout     | 1h-1h 20m     | 5K or faster | Speed            |
+|       | Wed      | Speed Workout     | 1h-1h 20m     | 5:20         | Speed            |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 40m-1h        | Easy         | Foundation       |
-|       | Sat      | Fast Finish Long Run | 1h 45m-2h 15m | Easy     | Fast Finish     |
+|       | Fri      | Easy Run          | 40m-1h        | 6:08-6:42    | Foundation       |
+|       | Sat      | Fast Finish Long Run | 1h 45m-2h 15m | 6:08-6:42 | Fast Finish     |
 | 6     | Sun      | Rest Day          | -             | -            | Recovery         |
-|       | Mon      | Fartlek Run       | 50m-1h 10m    | 5K-10K Effort| Speed Play       |
+|       | Mon      | Fartlek Run       | 50m-1h 10m    | 5:20-5:30    | Speed Play       |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
 |       | Wed      | Tempo Intervals   | 50m-1h 10m    | 5:26-5:37    | Threshold        |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 30m-40m       | Easy         | Foundation       |
-|       | Sat      | Long Run          | 1h 45m-2h     | Easy         | Time             |
+|       | Fri      | Easy Run          | 30m-40m       | 6:08-6:42    | Foundation       |
+|       | Sat      | Long Run          | 1h 45m-2h     | 6:08-6:42    | Time             |
 | 7     | Sun      | Rest Day          | -             | -            | Recovery         |
 |       | Mon      | Progression Run   | 1h 20m-1h 30m | Varies       | Progression      |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
-|       | Wed      | Speed Workout     | 1h-1h 20m     | 5K or faster | Speed            |
+|       | Wed      | Speed Workout     | 1h-1h 20m     | 5:20         | Speed            |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 30m-40m       | Easy         | Foundation       |
-|       | Sat      | Fast Finish Long Run | 1h 45m-2h 15m | Easy     | Fast Finish     |
+|       | Fri      | Easy Run          | 30m-40m       | 6:08-6:42    | Foundation       |
+|       | Sat      | Fast Finish Long Run | 1h 45m-2h 15m | 6:08-6:42 | Fast Finish     |
 | 8     | Sun      | Rest Day          | -             | -            | Recovery         |
-|       | Mon      | Easy Run          | 30m-40m       | Easy         | Strength         |
+|       | Mon      | Easy Run          | 30m-40m       | 6:08-6:42    | Strength         |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
 |       | Wed      | Tempo Run         | 50m-1h 10m    | 5:31-5:42    | Threshold        |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 30m-40m       | Easy         | Foundation       |
-|       | Sat      | Long Run          | 1h 45m-2h     | Easy         | Time             |
+|       | Fri      | Easy Run          | 30m-40m       | 6:08-6:42    | Foundation       |
+|       | Sat      | Long Run          | 1h 45m-2h     | 6:08-6:42    | Time             |
 | 9     | Sun      | Rest Day          | -             | -            | Recovery         |
-|       | Mon      | Fartlek Run       | 50m-1h 10m    | 5K-10K Effort| Speed Play       |
+|       | Mon      | Fartlek Run       | 50m-1h 10m    | 5:20-5:30    | Speed Play       |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
-|       | Wed      | Speed Workout     | 1h-1h 20m     | 5K or faster | Speed            |
+|       | Wed      | Speed Workout     | 1h-1h 20m     | 5:20         | Speed            |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 30m-40m       | Easy         | Foundation       |
-|       | Sat      | Fast Finish Long Run | 1h 45m-2h 15m | Easy     | Fast Finish     |
+|       | Fri      | Easy Run          | 30m-40m       | 6:08-6:42    | Foundation       |
+|       | Sat      | Fast Finish Long Run | 1h 45m-2h 15m | 6:08-6:42 | Fast Finish     |
 | 10    | Sun      | Rest Day          | -             | -            | Recovery         |
 |       | Mon      | Progression Run   | 1h 20m-1h 30m | Varies       | Progression      |
 |       | Tue      | Rest Day          | -             | -            | Recovery         |
-|       | Wed      | Speed Workout     | 1h-1h 20m     | 5K or faster | Speed            |
+|       | Wed      | Speed Workout     | 1h-1h 20m     | 5:20         | Speed            |
 |       | Thu      | Rest Day          | -             | -            | Recovery         |
-|       | Fri      | Easy Run          | 30m-40m       | Easy         | Foundation       |
-|       | Sat      | Long Run          | 1h 45m-2h     | Easy         | Time             |
-
+|       | Fri      | Easy Run          | 30m-40m       | 6:08-6:42    | Foundation       |
+|       | Sat      | Long Run          | 1h 45m-2h     | 6:08-6:42    | Time             |
 """,
 }
