@@ -350,11 +350,12 @@ def main():
     bmac = """
 <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="mariuss" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
     """
-    with r:
-        html(bmac)
+    
     strava_header = strava.header()
     strava_auth = strava.authenticate(header=strava_header, stop_if_unauthenticated=False)
     if strava_auth:
+        with r:
+            html(bmac)
         df_raw = pd.DataFrame()
         page_num = 1
 
