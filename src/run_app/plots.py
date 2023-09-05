@@ -81,6 +81,8 @@ def adjust_heart_rate_for_cardiac_drift(row):
 @st.cache_data
 def plot_heart_rate_efficiency(df: pd.DataFrame):
     try:
+        df = df.dropna(subset=['distance_km', 'total_elevation_gain', 'moving_time_seconds', 'average_heartrate'])
+
         ELEVATION_ADJUSTMENT_FACTOR = 11
         df['additional_distance'] = ELEVATION_ADJUSTMENT_FACTOR * df['total_elevation_gain']
         df['adjusted_distance'] = df['distance_km'] + df['additional_distance'] / 1000
