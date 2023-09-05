@@ -200,8 +200,8 @@ def plot_fatigue_sport(df):
             fig,
             use_container_width=True,
         )
-    except:
-        st.warning("Not enought heartrate date to calculate fatigue.")
+    except Exception as e:
+        st.warning("A problem occured: " + str(e))
 
 
 def plot_selected_metrics(df: pd.DataFrame, metrics: list):
