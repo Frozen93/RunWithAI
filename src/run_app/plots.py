@@ -99,7 +99,7 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
             "<b>Pace:</b> %{customdata[1]:.2f} min/km<br>"
             "<b>Average Heartrate:</b> %{customdata[2]:.2f}<br>"
             "<b>Elevation Gain:</b> %{customdata[3]:.2f} m<br>"
-            "<extra></extra>"  # This removes the additional info box in hover
+            "<extra></extra>"  
         )
         # Regression Line Calculation
         df['heart_rate_efficiency'] = pd.to_numeric(df['heart_rate_efficiency'], errors='coerce')
@@ -174,7 +174,7 @@ def plot_fatigue_sport(df):
         weekly_data['Normalized Intensity'] = (
             weekly_data['Weekly Intensity'] - weekly_data['Weekly Intensity'].min()
         ) / (weekly_data['Weekly Intensity'].max() - weekly_data['Weekly Intensity'].min())
-        DECAY_FACTOR = 0.9
+        DECAY_FACTOR = 0.7
         weekly_data['Fatigue Adjustment'] = 1 - (weekly_data['Days Since Last'] * (1 - DECAY_FACTOR))
         weekly_data['Fatigue'] = (
             100
