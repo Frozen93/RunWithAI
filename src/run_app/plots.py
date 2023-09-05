@@ -70,7 +70,7 @@ def plot_distance_histogram(df):
 
 def adjust_heart_rate_for_cardiac_drift(row):
     # Assuming 5% adjustment at 60 minutes or 3600 seconds
-    adjustment = 1 - 0.05 * (row['moving_time_seconds'] ** 1.3 / 3600)
+    adjustment = 1 - 0.05 * (row['moving_time_seconds'] ** 1.6 / 3600)
 
     # Clamping the adjustment between 0.95 (5% decrease) and 1 (no adjustment)
     adjustment = max(0.95, min(1, adjustment))
