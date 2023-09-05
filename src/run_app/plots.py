@@ -138,8 +138,8 @@ def plot_heart_rate_efficiency(df: pd.DataFrame):
         )
 
         st.plotly_chart(fig, use_container_width=True)
-    except:
-        st.warning("Not enough Heart Rate data")
+    except Exception as e:
+        st.warning("A problem occured: " + str(e))
 
 
 def plot_fatigue_sport(df):
