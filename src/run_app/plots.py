@@ -60,7 +60,7 @@ def plot_distance_histogram(df):
         ]
     )
     fig.update_layout(
-        title="Distribution of Running distance_meterss",
+        title="Distribution of Running distance_meters",
         xaxis_title="distance_meters (km)",
         yaxis_title="Number of Runs",
         bargap=0.1,
