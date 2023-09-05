@@ -179,7 +179,7 @@ def plot_fatigue_sport(df):
         weekly_data['Fatigue'] = (
             100
             * weekly_data['Fatigue Adjustment']
-            * (weekly_data['Normalized HRPR'] + weekly_data['Normalized Volume'] + weekly_data['Normalized Intensity'])
+            * 0.5*(weekly_data['Normalized HRPR'] + 2 * weekly_data['Normalized Volume'] + 2 * weekly_data['Normalized Intensity'])
             / 3
             + 10
         )
