@@ -58,7 +58,7 @@ def load_data(data_source: str) -> pd.DataFrame:
     data["Month-Year"] = data["date"].dt.strftime("%Y-%m")
     data["pace"] = data["pace"].apply(convert_pace)
 
-    data = data[data["date"] >= "2023-01-01"]
+    data = data[data["date"] >= "2024-01-01"]
     return data.sort_values(by="date")
 
 
