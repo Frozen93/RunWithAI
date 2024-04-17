@@ -58,7 +58,7 @@ def load_data(data_source: str) -> pd.DataFrame:
     data["Month-Year"] = data["date"].dt.strftime("%Y-%m")
     data["pace"] = data["pace"].apply(convert_pace)
 
-    data = data[data["date"] >= "2024-01-01"]
+    data = data[data["date"] >= "2023-01-01"]
     return data.sort_values(by="date")
 
 
@@ -373,8 +373,9 @@ def main():
                 print(f"Error on page {page_num}: {e}")
                 break
         df_raw = strava.load_strava_data(df_raw)
+        df_raw_2024 = df_raw[df_raw['date'].dt.year == 2024]
 
-        activity_heatmap(df_raw)
+        activity_heatmap(df_raw_2024)
         pace, threshold = st.columns(2)
         with pace:
             df = pace_threshold(df_raw)
